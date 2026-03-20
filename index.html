@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KR Enclave Rent Bill – expanded features</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --main: #1f4e8c;
+  --light: #eef3ff;
+  --border: #cfd6e4;
+  --text: #2c3e50;
+  --accent: #b22222;
+}
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 10px;
+  background: #d9e0ec;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#bill {
+  width: 190mm;
+  min-height: 270mm;
+  margin: 0 auto;
+  padding: 15px 22px 20px 22px;
+  background: #ffffff;
+  border: 1px solid #9bb1c9;
+  box-shadow: 0 10px 24px rgba(0,20,50,0.2);
+  box-sizing: border-box;
+  position: relative;
+  border-radius: 6px 6px 3px 3px;
+}
+#bill::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 6px;
+  background: linear-gradient(90deg, #1f4e8c, #6c93c0, #1f4e8c);
+  border-radius: 6px 6px 0 0;
+}
+.watermark {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-28deg);
+  font-size: 150px;
+  font-weight: 900;
+  letter-spacing: 30px;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  opacity: 0.12;
+  z-index: 0;
+  font-family: 'Impact', sans-serif;
+}
+.watermark .black { color: #2b4f78; }
+.watermark .red { color: #d19999; }
+
+/* HEADER – with stacked bill no/date */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: var(--main);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  padding: 12px 22px;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #0a2540;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 2;
+}
+.address {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+/*
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.1);
+  padding: 4px 14px 4px 6px;
+  border-radius: 40px;
+}
+*/
+.logo-area img {
+  height: 36px;
+  width: auto;
+  background: white;
+  border-radius: 30px;
+  padding: 3px;
+}
+.owner-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffe48f;
+}
+.contact-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+.contact-row a {
+  text-decoration: none;
+  background: #2d67af;
+  color: white;
+  padding: 3px 10px;
+  border-radius: 30px;
+  font-size: 9px;
+  font-weight: 600;
+  border: 1px solid #b3cef0;
+}
+
+/* BILL NO/DATE – stacked (line by line) */
+#billNoDiv {
+  background: rgba(0,0,0,0.15);
+  padding: 10px 22px;
+  border-radius: 36px;
+  font-size: 11px;
+  font-weight: 600;
+  backdrop-filter: blur(2px);
+  border: 1px solid #b1c9ec;
+  text-align: center;
+  min-width: 130px;
+}
+.bill-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 2;
+  border-bottom: 1px dashed rgba(255,255,255,0.3);
+  padding: 3px 0;
+}
+.bill-row:last-child {
+  border-bottom: none;
+}
+.bill-label {
+  color: #fffbdd;
+  font-weight: 500;
+}
+.bill-value {
+  font-weight: 800;
+  background: #102f50;
+  padding: 2px 12px;
+  border-radius: 30px;
+  color: white;
+  letter-spacing: 0.4px;
+  margin-left: 10px;
+}
+
+/* TABLES */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 10.5px;
+  border: 1px solid #b6c6dc;
+  background: white;
+}
+th {
+  background: var(--main);
+  color: white;
+  padding: 8px 4px;
+  font-weight: 700;
+  font-size: 11px;
+  border: 1px solid #1a3f64;
+}
+td {
+  border: 1px solid #c2d0e5;
+  padding: 8px 6px;
+  color: var(--text);
+}
+.label {
+  font-weight: 700;
+  background: #e2ecfb;
+  color: #103a62;
+  width: 32%;
+  border-right: 2px solid #b2c7e3;
+}
+input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 500;
+  border-bottom: 1px dashed #8ca3c2;
+  text-align: left;
+}
+input:focus {
+  border-bottom: 2px solid #1f4e8c;
+  background: #f3faff;
+}
+.water-th {
+  background: #deeaf9;
+  color: #0f3357;
+  font-weight: 800;
+}
+.center {
+  text-align: center;
+  font-weight: 600;
+}
+.total {
+  font-weight: 800;
+  color: #b22222;
+  background: #fff0ed;
+}
+#totalWords {
+  font-style: italic;
+  background: #fff7eb;
+  padding: 8px;
+  font-weight: 600;
+}
+.notes {
+  margin: 16px 0 10px;
+  padding: 12px 18px;
+  border: 1px solid #d1deef;
+  background: #f7fcff;
+  font-size: 10.5px;
+  border-radius: 12px;
+}
+.footer {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px dashed #b0c2da;
+  padding-top: 18px;
+}
+.signature {
+  text-align: center;
+  width: 40%;
+}
+.signature .name {
+  font-weight: 700;
+  font-size: 12px;
+  color: #1f4e8c;
+  border-bottom: 1px solid #b3c7e0;
+  padding-bottom: 4px;
+}
+.developer {
+  text-align: center;
+  margin-top: 18px;
+  padding: 6px 12px;
+  background: #ecf2fc;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  font-size: 9px;
+}
+.controls { text-align: center; margin: 20px 0; }
+button {
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 700;
+  background: #0b2d4f;
+  color: white;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px #0a2744;
+}
+</style>
+</head>
+<body>
+
+<div id="bill">
+  <div class="watermark"><span class="black">SS</span><span class="red">R</span></div>
+
+  <!-- header with stacked bill no/date -->
+  <div class="header">
+    <div class="address">
+      <div class="logo-area">
+        <!--  <img src="data:image/jpeg;base64,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
+" alt="KR enclave"> -->
+	 <span class="owner-name">KR ENCLAVE</span>
+      </div>
+      <div class="contact-row">
+        <a href="tel:+918050408993">📞 +91 9611459960</a>
+        <a href="https://wa.me/919611459960"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- BILL NO & DATE – stacked line by line (exactly as requested) -->
+    <div id="billNoDiv">
+      <div class="bill-row">
+        <span class="bill-label">Bill No.</span>
+        <span class="bill-value" id="billNo"></span>
+      </div>
+      <div class="bill-row">
+        <span class="bill-label">Date</span>
+        <span class="bill-value" id="billDate"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMER + BASIC CHARGES -->
+  <table>
+    <tr><td class="label">House No</td><td><input type="text" id="house" placeholder="e.g. A-101"></td></tr>
+    <tr><td class="label">Building Name</td><td><input type="text" id="name" placeholder="e.g. Sree Nilayam"></td></tr>
+    <tr><td class="label">Arrears (₹)</td><td><input type="number" id="arrears" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
+    <tr><td class="label">Maintenance (₹)</td><td><input type="number" id="maintenance" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
+  </table>
+
+  <!-- WATER METER SECTION -->
+  <table>
+    <tr><th colspan="4">💧 WATER USAGE (meter reading)  •  rate ₹0.15 / unit (10L)</th></tr>
+    <tr class="water-th">
+      <th style="background:#e2ebf6; color:#103459;">Prev reading</th>
+      <th style="background:#e2ebf6; color:#103459;">Current reading</th>
+      <th style="background:#e2ebf6; color:#103459;">Usage (kL*10)</th>
+      <th style="background:#e2ebf6; color:#103459;">Water charges</th>
+    </tr>
+    <tr>
+      <td><input type="number" id="prev" value="0" oninput="allowOnlyNumbers(this)"></td>
+      <td><input type="number" id="current" value="0" oninput="allowOnlyNumbers(this)"></td>
+      <td class="center" id="usage">0</td>
+      <td class="center" id="waterAmt">0.00</td>
+    </tr>
+  </table>
+
+  <!-- ADDITIONAL CHARGES: Sanitary, Parking, Others (new features) -->
+  <table>
+    <tr><th colspan="2">➕ ADDITIONAL CHARGES (if any)</th></tr>
+    <tr><td class="label">Sanitary / Sewerage (₹)</td><td><input type="number" id="sanitary" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
+    <tr><td class="label">Parking / Vehicle (₹)</td><td><input type="number" id="parking" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
+    <tr><td class="label">Other charges (₹)</td><td><input type="number" id="otherCharges" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
+  </table>
+
+  <!-- RENT & GRAND TOTAL -->
+  <table>
+    <tr><td class="label">Rent amount (₹)</td><td><input type="number" id="rent" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
+    <tr><td class="label total">TOTAL PAYABLE (₹)</td><td class="center total" id="total">0.00</td></tr>
+    <tr><td class="label" style="color:#b22222;">Amount in words</td><td id="totalWords">Zero Rupees Only</td></tr>
+  </table>
+
+  <!-- NOTES with sanitary mention etc -->
+  <div class="notes">
+    <b>📋 Terms & additional info:</b>
+    <ul style="margin:5px 0 0 18px;">
+      <li>Water charges: ₹0.15 per unit (1 unit = 10 litres).</li>
+      <li><strong>Sanitary / sewerage</strong> included under additional charges if applicable.</li>
+      <li>Parking fee & other charges as per society rules.</li>
+      <li>Late payment fine ₹50/day after due date (7 days).</li>
+    </ul>
+  </div>
+
+  <!-- SIGNATURE -->
+  <div class="footer">
+    <div class="signature"><div class="name">_______________</div><div style="font-size:9px;">Tenant sign</div></div>
+    <div class="signature"><div class="name">Karthik</div><div style="font-size:9px;">Authorized signatory</div></div>
+  </div>
+
+  <!-- developer (optional) -->
+<div class="developer" style="text-align:center; margin-top:15px; display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
+  
+  <a href="https://portfolio-01-olmn.onrender.com" target="_blank" style="background:#ff4d4d; padding:3px 12px; border-radius:30px; color:white; text-decoration:none; font-size:11px; display:inline-flex; align-items:center; gap:5px;">
+    <i class="fa-solid fa-code"></i> KR Webcrafts
+  </a>
+  
+  <a href="tel:+919611459960" style="background:#1e62b0; padding:3px 12px; border-radius:30px; color:white; text-decoration:none; font-size:11px; display:inline-flex; align-items:center; gap:5px;">
+    <i class="fa-solid fa-phone"></i>
+  </a>
+  
+  <a href="https://wa.me/919611459960" target="_blank" style="background:#25D366; padding:3px 12px; border-radius:30px; color:white; text-decoration:none; font-size:11px; display:inline-flex; align-items:center; gap:5px;">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+  
+</div>
+
+<div class="controls">
+  <button onclick="downloadPDF()">⬇️ Download Rent Bill (PDF)</button>
+</div>
+
+<script>
+// bill number persistence
+let billNumber = localStorage.getItem("krBillNo");
+if (!billNumber) { billNumber = 1; } else { billNumber = parseInt(billNumber) + 1; }
+localStorage.setItem("krBillNo", billNumber);
+document.getElementById("billNo").innerText = String(billNumber).padStart(3,'0');
+
+// today's date
+const today = new Date();
+let dd = today.getDate(), mm = today.getMonth()+1, yyyy = today.getFullYear();
+if(dd<10) dd='0'+dd;
+if(mm<10) mm='0'+mm;
+document.getElementById("billDate").innerText = dd+'-'+mm+'-'+yyyy;
+
+// attach event listeners to all inputs
+document.querySelectorAll("input").forEach(el => el.addEventListener("input", calculate));
+calculate();
+
+function calculate() {
+  // readings
+  let prev = parseFloat(document.getElementById("prev").value) || 0;
+  let current = parseFloat(document.getElementById("current").value) || 0;
+  let usage = (current - prev);
+  if (usage < 0) usage = 0;
+  let water = usage * 10 * 0.15;   // rate 0.15
+
+  // basic charges
+  let arrears = parseFloat(document.getElementById("arrears").value) || 0;
+  let maintenance = parseFloat(document.getElementById("maintenance").value) || 0;
+  let rent = parseFloat(document.getElementById("rent").value) || 0;
+
+  // new sanitary, parking, other
+  let sanitary = parseFloat(document.getElementById("sanitary").value) || 0;
+  let parking = parseFloat(document.getElementById("parking").value) || 0;
+  let other = parseFloat(document.getElementById("otherCharges").value) || 0;
+
+  let total = water + arrears + maintenance + rent + sanitary + parking + other;
+
+  document.getElementById("usage").innerText = usage;
+  document.getElementById("waterAmt").innerText = water.toFixed(2);
+  document.getElementById("total").innerText = total.toFixed(2);
+  document.getElementById("totalWords").innerText = numberToWords(total);
+}
+
+function numberToWords(num) {
+  if (num == 0) return "Zero Rupees Only";
+  const ones = ["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+  const tens = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+  function convert(n) {
+    if (n < 20) return ones[n];
+    if (n < 100) return tens[Math.floor(n/10)] + (n%10 ? " " + ones[n%10] : "");
+    if (n < 1000) return ones[Math.floor(n/100)] + " Hundred" + (n%100 ? " " + convert(n%100) : "");
+    if (n < 100000) return convert(Math.floor(n/1000)) + " Thousand" + (n%1000 ? " " + convert(n%1000) : "");
+    if (n < 10000000) return convert(Math.floor(n/100000)) + " Lakh" + (n%100000 ? " " + convert(n%100000) : "");
+    return convert(Math.floor(n/10000000)) + " Crore" + (n%10000000 ? " " + convert(n%10000000) : "");
+  }
+  let parts = num.toFixed(2).split(".");
+  let rupees = parseInt(parts[0]), paisa = parseInt(parts[1]);
+  let words = "";
+  if (rupees > 0) words += convert(rupees) + " Rupees";
+  if (paisa > 0) words += " and " + convert(paisa) + " Paisa";
+  return words + " Only";
+}
+
+function allowOnlyNumbers(input) {
+  input.value = input.value.replace(/[^0-9.]/g, '');
+}
+
+// PDF export
+function downloadPDF() {
+  let controls = document.querySelector(".controls");
+  controls.style.display = "none";
+  const element = document.getElementById("bill");
+  const width = element.scrollWidth + 30;
+  const height = element.scrollHeight + 30;
+  const opt = {
+    margin: 5,
+    filename: 'KR_Rent_Bill_'+document.getElementById("billNo").innerText+'.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    pagebreak: { mode: ['avoid-all'] },
+    html2canvas: { scale: 3, useCORS: true, scrollY: 0, width: width, height: height },
+    jsPDF: { unit: 'px', format: [width, height], orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(element).save().then(() => controls.style.display = "block");
+}
+
+// disable right-click (simple)
+document.addEventListener("contextmenu", e => e.preventDefault());
+</script>
+</body>
+</html>
