@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KR Enclave · Advanced Rent Bill System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>KR Enclave · Mobile Rent Bill System</title>
   <!-- Use stable versions of libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -23,21 +23,22 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      margin: 24px 16px;
-      padding: 20px;
+      margin: 12px 12px;
+      padding: 12px;
     }
 
-    /* main bill card – optimized for single page PDF */
+    /* main bill card – FULLY RESPONSIVE: flexible width, padding adjusts */
     #bill {
-      width: 800px;
-      max-width: 100%;
+      width: 100%;
+      max-width: 800px;
       background: #ffffff;
-      border-radius: 32px;
-      box-shadow: 0 25px 50px -12px rgba(0, 20, 40, 0.4);
-      padding: 28px 32px;
+      border-radius: 28px;
+      box-shadow: 0 20px 40px -10px rgba(0, 20, 40, 0.35);
+      padding: 20px 18px;
       position: relative;
       overflow: visible;
       margin: 0 auto;
+      transition: all 0.2s ease;
     }
 
     /* subtle gradient edge */
@@ -47,21 +48,21 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 6px;
+      height: 5px;
       background: linear-gradient(90deg, #1e3c5f, #5483b7, #8bb0da, #1e3c5f);
-      opacity: 0.8;
-      border-radius: 32px 32px 0 0;
+      opacity: 0.9;
+      border-radius: 28px 28px 0 0;
     }
 
-    /* watermark – very light, modern */
+    /* watermark – lighter on mobile to not overwhelm */
     .watermark {
       position: absolute;
-      top: 50%;
-      left: 60%;
-      transform: translate(-40%, -50%) rotate(-12deg);
-      font-size: 110px;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -40%) rotate(-12deg);
+      font-size: clamp(55px, 14vw, 95px);
       font-weight: 800;
-      letter-spacing: 20px;
+      letter-spacing: 8px;
       white-space: nowrap;
       color: rgba(25, 55, 90, 0.03);
       z-index: 0;
@@ -70,17 +71,19 @@
       user-select: none;
     }
 
-    /* header – clean flex with glass touch */
+    /* header – STACK on mobile, row on wider screens */
     .header-modern {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
       background: linear-gradient(105deg, #0a2647 0%, #1f4172 100%);
       color: white;
-      padding: 18px 24px;
+      padding: 16px 20px;
       border-radius: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 10px 18px -8px rgba(0,20,40,0.5);
+      margin-bottom: 20px;
+      box-shadow: 0 10px 18px -8px rgba(0,20,40,0.4);
       position: relative;
       z-index: 5;
       border: 1px solid rgba(255,255,255,0.2);
@@ -89,33 +92,36 @@
     .property-tag {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 8px;
+      flex: 2;
     }
 
     .property-name {
-      font-size: 1.6rem;
+      font-size: clamp(1.2rem, 5vw, 1.6rem);
       font-weight: 600;
       letter-spacing: -0.02em;
       line-height: 1.2;
       background: rgba(255,255,255,0.12);
-      padding: 4px 18px 4px 14px;
+      padding: 6px 14px;
       border-radius: 100px;
       display: inline-block;
+      width: fit-content;
     }
 
     .contact-links {
       display: flex;
-      gap: 10px;
-      margin-top: 4px;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
     }
 
     .contact-links a {
       background: rgba(255,255,255,0.18);
       color: white;
       text-decoration: none;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-weight: 500;
-      padding: 5px 14px;
+      padding: 5px 12px;
       border-radius: 40px;
       display: inline-flex;
       align-items: center;
@@ -125,22 +131,22 @@
     }
 
     .bill-meta-card {
-      background: rgba(0,0,0,0.2);
+      background: rgba(0,0,0,0.25);
       backdrop-filter: blur(6px);
-      padding: 12px 20px;
-      border-radius: 60px;
+      padding: 10px 18px;
+      border-radius: 48px;
       border: 1px solid rgba(255,255,255,0.25);
-      min-width: 160px;
+      min-width: 150px;
       text-align: right;
     }
 
     .meta-row {
       display: flex;
       justify-content: space-between;
-      gap: 25px;
-      font-size: 0.9rem;
+      gap: 12px;
+      font-size: 0.8rem;
       font-weight: 400;
-      color: rgba(255,255,255,0.9);
+      color: rgba(255,255,255,0.92);
       border-bottom: 1px dashed rgba(255,255,255,0.2);
       padding: 3px 0;
     }
@@ -148,12 +154,13 @@
     .meta-val {
       font-weight: 700;
       background: #0d2f55;
-      padding: 2px 14px;
+      padding: 2px 12px;
       border-radius: 40px;
       color: white;
+      font-size: 0.8rem;
     }
 
-    /* modern table – borderless, soft cells */
+    /* responsive tables: convert to block / flex on mobile but keep card style */
     .responsive-table {
       width: 100%;
       border-collapse: separate;
@@ -162,6 +169,63 @@
       font-size: 0.9rem;
     }
 
+    /* on small screens we force cells to behave like stacked flex */
+    @media (max-width: 550px) {
+      .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td {
+        display: block;
+        width: 100%;
+      }
+      .responsive-table tr {
+        margin-bottom: 12px;
+      }
+      .responsive-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        width: 100%;
+        border-radius: 18px !important;
+        background: #ffffff !important;
+      }
+      .label-cell {
+        background: #e7f0fd !important;
+        font-weight: 700;
+        width: auto;
+        border-right: none;
+        border-radius: 18px !important;
+      }
+      .value-cell {
+        background: #ffffff !important;
+        border-radius: 18px !important;
+        justify-content: flex-end;
+      }
+      .value-cell input, .value-cell select {
+        text-align: right;
+        width: auto;
+        min-width: 120px;
+        font-weight: 500;
+      }
+      .total-row td {
+        justify-content: center !important;
+        text-align: center;
+        background: #112b4a !important;
+      }
+      .total-label {
+        background: #1f3f64 !important;
+      }
+      .total-amount {
+        font-size: 1.4rem;
+      }
+      .water-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .water-item {
+        padding: 12px 4px;
+      }
+    }
+
+    /* normal tablet+ default styling */
     .responsive-table td {
       background: #f9fcff;
       padding: 12px 18px;
@@ -177,7 +241,6 @@
       width: 30%;
       background: #e7f0fd !important;
       border-radius: 16px 0 0 16px;
-      letter-spacing: -0.01em;
       border-right: 2px solid white;
     }
 
@@ -194,7 +257,7 @@
       font-size: 0.95rem;
       font-weight: 500;
       background: transparent;
-      padding: 5px 4px;
+      padding: 6px 4px;
       border-bottom: 2px solid #cbd6e9;
       transition: 0.15s;
       font-family: inherit;
@@ -226,19 +289,19 @@
 
     .water-grid {
       display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 8px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
       background: #f2f8ff;
       border-radius: 24px;
-      padding: 12px 8px;
-      margin: 4px 0 10px 0;
+      padding: 14px 8px;
+      margin: 4px 0 12px 0;
       text-align: center;
     }
 
     .water-item {
       background: white;
       border-radius: 22px;
-      padding: 10px 0;
+      padding: 8px 0;
       font-weight: 600;
       color: #0e2f4b;
       box-shadow: 0 2px 6px rgba(0,0,0,0.02);
@@ -246,11 +309,11 @@
 
     .water-item input {
       text-align: center;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
       border-bottom: 2px solid #b3c9e5;
       width: 80%;
-      margin: 0 auto;
+      margin: 4px auto 0;
     }
 
     .chip {
@@ -258,7 +321,7 @@
       border-radius: 30px;
       padding: 4px 16px;
       font-weight: 500;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     /* total area modern */
@@ -267,12 +330,13 @@
       border-radius: 24px;
       overflow: hidden;
       box-shadow: 0 6px 14px -6px #0a2647;
+      margin: 16px 0 8px;
     }
 
     .total-row td {
       background: transparent !important;
       color: white;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       border: none;
       padding: 14px 18px;
@@ -281,7 +345,6 @@
     .total-label {
       background: #1f3f64 !important;
       border-radius: 24px 0 0 24px;
-      padding-left: 28px;
     }
 
     .total-amount {
@@ -295,62 +358,67 @@
       font-style: italic;
       background: #edf5ff;
       border-radius: 24px;
-      padding: 10px 20px;
+      padding: 10px 16px;
       font-weight: 500;
       color: #1b3e62;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+      word-break: break-word;
     }
 
     .notes-modern {
       background: #f1f7fe;
       border-radius: 24px;
-      padding: 16px 24px;
-      margin: 16px 0 14px;
+      padding: 14px 18px;
+      margin: 16px 0 12px;
       border: 1px solid rgba(255,255,255,0.7);
     }
 
     .notes-modern ul {
-      margin-left: 20px;
+      margin-left: 18px;
       color: #1d374f;
       line-height: 1.6;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     .notes-modern b {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
 
     .signature-modern {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
-      margin: 20px 0 8px;
+      margin: 20px 0 12px;
+      gap: 16px;
     }
 
     .signature-block {
-      width: 40%;
+      width: 45%;
+      min-width: 130px;
       border-top: 2px dashed #a0b9d3;
       padding-top: 10px;
       font-weight: 600;
       color: #113355;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
 
     .signature-block span {
       font-weight: 400;
       color: #4b5f78;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
     }
 
     .developer-badge {
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 12px;
       background: #ecf3fc;
-      border-radius: 80px;
-      padding: 8px 18px;
-      margin-top: 16px;
-      font-size: 0.85rem;
+      border-radius: 60px;
+      padding: 8px 16px;
+      margin-top: 14px;
+      font-size: 0.8rem;
       color: #1a3552;
     }
 
@@ -360,12 +428,13 @@
       font-weight: 600;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       background: white;
       padding: 4px 12px;
       border-radius: 50px;
       transition: 0.2s;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      font-size: 0.75rem;
     }
 
     .btn-download {
@@ -373,21 +442,24 @@
       border: none;
       color: white;
       font-weight: 700;
-      font-size: 1.1rem;
-      padding: 14px 36px;
+      font-size: 1rem;
+      padding: 14px 28px;
       border-radius: 80px;
       cursor: pointer;
-      box-shadow: 0 12px 24px -10px #102b47;
+      box-shadow: 0 10px 20px -8px #102b47;
       transition: 0.2s;
-      margin: 20px auto 10px;
-      letter-spacing: 0.3px;
+      margin: 18px auto 8px;
+      letter-spacing: 0.5px;
       border: 1px solid #4273a5;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: auto;
     }
 
     .btn-download:hover {
       background: #1f4172;
-      transform: scale(1.02);
+      transform: scale(1.01);
     }
 
     .loading {
@@ -395,15 +467,54 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.92);
       color: white;
-      padding: 20px 40px;
-      border-radius: 50px;
-      font-size: 1.1rem;
+      padding: 16px 28px;
+      border-radius: 60px;
+      font-size: 0.95rem;
       z-index: 9999;
       display: none;
       font-weight: 600;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      white-space: nowrap;
+    }
+
+    /* extra touch improvements */
+    input, select, button {
+      font-size: 16px; /* prevents zoom on iOS */
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    @media (max-width: 420px) {
+      #bill {
+        padding: 16px 14px;
+      }
+      .water-item input {
+        width: 90%;
+        font-size: 0.9rem;
+      }
+      .signature-block {
+        width: 100%;
+        text-align: center;
+      }
+      .signature-modern {
+        flex-direction: column;
+        gap: 14px;
+      }
+      .bill-meta-card {
+        text-align: left;
+        width: 100%;
+      }
+      .header-modern {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .meta-row {
+        justify-content: space-between;
+      }
     }
   </style>
 </head>
@@ -414,7 +525,7 @@
   <!-- header modern -->
   <div class="header-modern">
     <div class="property-tag">
-      <span class="property-name"><i class="fa-regular fa-building" style="margin-right: 8px;"></i>KR Enclave</span>
+      <span class="property-name"><i class="fa-regular fa-building" style="margin-right: 6px;"></i>KR Enclave</span>
       <div class="contact-links">
         <a href="tel:+919611459960"><i class="fa-solid fa-phone"></i>+91 9611459960</a>
         <a href="https://wa.me/919611459960"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
@@ -426,43 +537,43 @@
     </div>
   </div>
 
-  <!-- house selection + building name -->
+  <!-- house selection + tenant name -->
   <table class="responsive-table">
-    <tr><td class="label-cell">🏠 Flat No.</td>
-      <td class="value-cell"><select id="houseSelect" onchange="updateBuilding()"><option value="">— Select house —</option><option value="A-101">A-101</option><option value="A-102">A-102</option><option value="A-103">A-103</option><option value="B-201">B-201</option><option value="B-202">B-202</option><option value="C-301">C-301</option><option value="C-302">C-302</option></select></td>
+     <tr><td class="label-cell">🏠 Flat No.</td>
+      <td class="value-cell"><select id="houseSelect"><option value="">— Select house —</option><option value="A-101">A-101</option><option value="A-102">A-102</option><option value="A-103">A-103</option><option value="B-201">B-201</option><option value="B-202">B-202</option><option value="C-301">C-301</option><option value="C-302">C-302</option></select></td>
     </tr>
     <tr><td class="label-cell">🏢 Tenant Name</td>
-      <td class="value-cell"><input type="text" id="buildingName" placeholder="auto fills" readonly></td>
+      <td class="value-cell"><input type="text" id="buildingName" placeholder="Auto-filled" readonly></td>
     </tr>
   </table>
 
   <!-- water meter advanced grid -->
   <div class="water-header"><i class="fa-solid fa-droplet" style="margin-right: 8px;"></i>WATER METER · ₹0.15 / 10L</div>
   <div class="water-grid">
-    <div class="water-item"><span style="font-size:0.75rem; opacity:0.7;">PREV (kL*10)</span><br><input type="number" id="prev" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></div>
-    <div class="water-item"><span style="font-size:0.75rem; opacity:0.7;">CURRENT</span><br><input type="number" id="current" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></div>
-    <div class="water-item" style="background:#e1efff;"><span style="font-size:0.75rem;">USAGE</span><br><span id="usage" style="font-size:1.4rem; font-weight:700;">0</span></div>
-    <div class="water-item" style="background:#d3e5ff;"><span style="font-size:0.75rem;">CHARGES</span><br><span id="waterAmt" style="font-size:1.3rem; font-weight:700;">0.00</span></div>
+    <div class="water-item"><span style="font-size:0.7rem; opacity:0.7;">PREV (kL*10)</span><br><input type="number" id="prev" placeholder="0" value="0"></div>
+    <div class="water-item"><span style="font-size:0.7rem; opacity:0.7;">CURRENT</span><br><input type="number" id="current" placeholder="0" value="0"></div>
+    <div class="water-item" style="background:#e1efff;"><span style="font-size:0.7rem;">USAGE</span><br><span id="usage" style="font-size:1.3rem; font-weight:700;">0</span></div>
+    <div class="water-item" style="background:#d3e5ff;"><span style="font-size:0.7rem;">CHARGES</span><br><span id="waterAmt" style="font-size:1.2rem; font-weight:700;">0.00</span></div>
   </div>
 
   <!-- RENT + CURRENT DUES -->
   <table class="responsive-table">
-    <tr><td class="label-cell">💰 Rent amount (₹)</td><td class="value-cell"><input type="number" id="rent" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></td></tr>
-    <tr><td class="label-cell">📆 Current dues / arrears (₹)</td><td class="value-cell"><input type="number" id="currentDues" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></td></tr>
+    <tr><td class="label-cell">💰 Rent amount (₹)</td><td class="value-cell"><input type="number" id="rent" placeholder="0" value="0"></td></tr>
+    <tr><td class="label-cell">📆 Current dues / arrears (₹)</td><td class="value-cell"><input type="number" id="currentDues" placeholder="0" value="0"></td></tr>
   </table>
 
   <!-- ADDITIONAL CHARGES -->
   <table class="responsive-table">
-    <tr><td class="label-cell">🧾 Sanitary / sewerage (₹)</td><td class="value-cell"><input type="number" id="sanitary" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></td></tr>
-    <tr><td class="label-cell">🅿️ Parking / vehicle (₹)</td><td class="value-cell"><input type="number" id="parking" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></td></tr>
-    <tr><td class="label-cell">📌 Other charges (₹)</td><td class="value-cell"><input type="number" id="otherCharges" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></td></tr>
+    <tr><td class="label-cell">🧾 Sanitary / sewerage (₹)</td><td class="value-cell"><input type="number" id="sanitary" placeholder="0" value="0"></td></tr>
+    <tr><td class="label-cell">🅿️ Parking / vehicle (₹)</td><td class="value-cell"><input type="number" id="parking" placeholder="0" value="0"></td></tr>
+    <tr><td class="label-cell">📌 Other charges (₹)</td><td class="value-cell"><input type="number" id="otherCharges" placeholder="0" value="0"></td></tr>
   </table>
 
   <!-- GRAND TOTAL -->
   <table class="responsive-table total-row">
     <tr><td class="label-cell total-label">TOTAL PAYABLE (₹)</td><td class="value-cell total-amount" id="total">0.00</td></tr>
   </table>
-  <div style="display: flex; align-items: center; gap: 16px; margin: 8px 0 10px;">
+  <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 8px 0 10px;">
     <span class="chip"><i class="fa-regular fa-pen-to-square"></i> in words</span>
     <div id="totalWords" style="flex:1;">Zero Rupees Only</div>
   </div>
@@ -487,18 +598,18 @@
   <!-- developer area -->
   <div class="developer-badge">
     <a href="https://portfolio-01-olmn.onrender.com" target="_blank"><i class="fa-solid fa-code"></i> KR Webcrafts</a>
-    <a href="tel:+919611459960"><i class="fa-solid fa-phone"></i></a>
-    <a href="https://wa.me/919611459960" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+    <a href="tel:+919611459960"><i class="fa-solid fa-phone"></i> Call</a>
+    <a href="https://wa.me/919611459960" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
   </div>
 </div> <!-- end bill -->
 
 <!-- download button outside bill -->
-<div style="text-align: center; margin: 18px auto;">
-  <button class="btn-download" onclick="downloadPDF()"><i class="fa-solid fa-file-pdf" style="margin-right: 12px;"></i>Download Rent Bill (PDF)</button>
+<div style="text-align: center; margin: 12px auto;">
+  <button class="btn-download" onclick="downloadPDF()"><i class="fa-solid fa-file-pdf" style="margin-right: 10px;"></i>Download Rent Bill (PDF)</button>
 </div>
 
 <div class="loading" id="loadingIndicator">
-  <i class="fa-solid fa-spinner fa-spin"></i> Generating PDF, please wait...
+  <i class="fa-solid fa-spinner fa-spin"></i> Generating PDF...
 </div>
 
 <script>
@@ -514,9 +625,9 @@
   document.getElementById("billDate").innerText = dd+'-'+mm+'-'+yyyy;
 
   const buildingMap = {
-    "A-101": "Ram", "A-102": "Charan", "A-103": "Kiran",
-    "B-201": "Anand", "B-202": "Gill",
-    "C-301": "Krishna", "C-302": "Muni"
+    "A-101": "Ram Sharma", "A-102": "Charan Singh", "A-103": "Kiran Mehta",
+    "B-201": "Anand Verma", "B-202": "Gill Preet",
+    "C-301": "Krishna Iyer", "C-302": "Muni Raj"
   };
 
   function updateBuilding() {
@@ -575,85 +686,84 @@
     const downloadBtn = document.querySelector('.btn-download');
     
     try {
-      // Show loading indicator
       loadingDiv.style.display = 'block';
       downloadBtn.disabled = true;
       downloadBtn.style.opacity = '0.6';
       
       const element = document.getElementById('bill');
       const billNo = document.getElementById("billNo").innerText;
+      const pdfWidth = 210;
+      const pdfHeight = 297;
       
-      // Calculate optimal scale to fit on one page
-      const pdfWidth = 210; // A4 width in mm
-      const pdfHeight = 297; // A4 height in mm
-      
-      // First capture at high quality
+      // Improved capture with higher scale and optimized for mobile layouts
       const canvas = await html2canvas(element, {
-        scale: 2.5,
+        scale: 2.8,
         backgroundColor: '#ffffff',
         logging: false,
         useCORS: true,
         windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight
+        windowHeight: element.scrollHeight,
+        onclone: (clonedDoc, element) => {
+          // ensure cloned styles retain responsiveness
+        }
       });
       
-      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const imgData = canvas.toDataURL('image/jpeg', 0.96);
       const { jsPDF } = window.jspdf;
       
-      // Calculate dimensions to fit perfectly on one page
       const imgWidthMm = pdfWidth;
       const imgHeightMm = (canvas.height * pdfWidth) / canvas.width;
       
-      // Create PDF with exact dimensions
       let pdf = new jsPDF({
         orientation: imgHeightMm > pdfHeight ? 'portrait' : 'portrait',
         unit: 'mm',
         format: 'a4'
       });
       
-      // If content is taller than page, scale it down to fit
-      let finalHeight = imgHeightMm;
-      let finalY = 0;
-      
       if (imgHeightMm > pdfHeight) {
-        // Scale down to fit height
         const scale = pdfHeight / imgHeightMm;
-        finalHeight = pdfHeight;
         const scaledWidth = imgWidthMm * scale;
         const xOffset = (pdfWidth - scaledWidth) / 2;
-        pdf.addImage(imgData, 'JPEG', xOffset, finalY, scaledWidth, finalHeight);
+        pdf.addImage(imgData, 'JPEG', xOffset, 0, scaledWidth, pdfHeight);
       } else {
-        // Center vertically if shorter
         const yOffset = (pdfHeight - imgHeightMm) / 2;
         pdf.addImage(imgData, 'JPEG', 0, yOffset, imgWidthMm, imgHeightMm);
       }
       
-      // Save the PDF
       pdf.save(`KR_Rent_Bill_${billNo}.pdf`);
       
     } catch (error) {
-      console.error('PDF generation error:', error);
-      alert('Error generating PDF. Please try again. Make sure you are using a modern browser.');
+      console.error('PDF error:', error);
+      alert('Could not generate PDF. Please try again or refresh.');
     } finally {
-      // Hide loading indicator and re-enable button
       loadingDiv.style.display = 'none';
       downloadBtn.disabled = false;
       downloadBtn.style.opacity = '1';
     }
   }
 
-  // Initialize calculations
-  calculate();
-  
-  // Attach event listeners to all inputs
+  // attach dynamic listeners
   document.querySelectorAll('input, select').forEach(el => {
-    if (el.id !== 'houseSelect') {
-      el.addEventListener('input', calculate);
-    }
+    el.addEventListener('input', function() {
+      if (el.type === 'number') allowOnlyNumbers(el);
+      if (el.id === 'houseSelect') updateBuilding();
+      else calculate();
+    });
   });
   
-  // Disable right-click (optional)
-  document.addEventListener("contextmenu", e => e.preventDefault());
+  // manually trigger
+  document.getElementById("houseSelect").addEventListener('change', updateBuilding);
+  window.updateBuilding = updateBuilding;
+  window.calculate = calculate;
+  window.allowOnlyNumbers = allowOnlyNumbers;
+  window.downloadPDF = downloadPDF;
+  
+  // initial load
+  updateBuilding();
+  calculate();
+  
+  // optional: disable context menu but not crucial
+  // document.addEventListener("contextmenu", e => e.preventDefault());
 </script>
 </body>
 </html>
