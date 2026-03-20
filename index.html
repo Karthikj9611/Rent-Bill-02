@@ -283,7 +283,7 @@ button {
 	 <span class="owner-name">KR ENCLAVE</span>
       </div>
       <div class="contact-row">
-        <a href="tel:+918050408993">📞 +91 9611459960</a>
+        <a href="tel:+919611459960">📞 +91 9611459960</a>
         <a href="https://wa.me/919611459960"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
       </div>
     </div>
@@ -305,8 +305,8 @@ button {
   <table>
     <tr><td class="label">House No</td><td><input type="text" id="house" placeholder="e.g. A-101"></td></tr>
     <tr><td class="label">Building Name</td><td><input type="text" id="name" placeholder="e.g. Sree Nilayam"></td></tr>
-    <tr><td class="label">Arrears (₹)</td><td><input type="number" id="arrears" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
-    <tr><td class="label">Maintenance (₹)</td><td><input type="number" id="maintenance" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
+    <tr><td class="label">Arrears (₹)</td><td><input type="number" id="arrears" value="" oninput="allowOnlyNumbers(this)"></td></tr>
+    <tr><td class="label">Maintenance (₹)</td><td><input type="number" id="maintenance" value="" oninput="allowOnlyNumbers(this)"></td></tr>
   </table>
 
   <!-- WATER METER SECTION -->
@@ -319,8 +319,8 @@ button {
       <th style="background:#e2ebf6; color:#103459;">Water charges</th>
     </tr>
     <tr>
-      <td><input type="number" id="prev" value="0" oninput="allowOnlyNumbers(this)"></td>
-      <td><input type="number" id="current" value="0" oninput="allowOnlyNumbers(this)"></td>
+      <td><input type="number" id="prev" value="" oninput="allowOnlyNumbers(this)"></td>
+      <td><input type="number" id="current" value="" oninput="allowOnlyNumbers(this)"></td>
       <td class="center" id="usage">0</td>
       <td class="center" id="waterAmt">0.00</td>
     </tr>
@@ -329,14 +329,14 @@ button {
   <!-- ADDITIONAL CHARGES: Sanitary, Parking, Others (new features) -->
   <table>
     <tr><th colspan="2">➕ ADDITIONAL CHARGES (if any)</th></tr>
-    <tr><td class="label">Sanitary / Sewerage (₹)</td><td><input type="number" id="sanitary" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
-    <tr><td class="label">Parking / Vehicle (₹)</td><td><input type="number" id="parking" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
-    <tr><td class="label">Other charges (₹)</td><td><input type="number" id="otherCharges" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
+    <tr><td class="label">Sanitary / Sewerage (₹)</td><td><input type="number" id="sanitary" value="" oninput="allowOnlyNumbers(this)"></td></tr>
+    <tr><td class="label">Parking / Vehicle (₹)</td><td><input type="number" id="parking" value="" oninput="allowOnlyNumbers(this)"></td></tr>
+    <tr><td class="label">Other charges (₹)</td><td><input type="number" id="otherCharges" value="" oninput="allowOnlyNumbers(this)"></td></tr>
   </table>
 
   <!-- RENT & GRAND TOTAL -->
   <table>
-    <tr><td class="label">Rent amount (₹)</td><td><input type="number" id="rent" value="0" oninput="allowOnlyNumbers(this)"></td></tr>
+    <tr><td class="label">Rent amount (₹)</td><td><input type="number" id="rent" value="" oninput="allowOnlyNumbers(this)"></td></tr>
     <tr><td class="label total">TOTAL PAYABLE (₹)</td><td class="center total" id="total">0.00</td></tr>
     <tr><td class="label" style="color:#b22222;">Amount in words</td><td id="totalWords">Zero Rupees Only</td></tr>
   </table>
