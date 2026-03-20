@@ -428,10 +428,10 @@
 
   <!-- house selection + building name -->
   <table class="responsive-table">
-    <tr><td class="label-cell">🏠 House No</td>
+    <tr><td class="label-cell">🏠 Flat No.</td>
       <td class="value-cell"><select id="houseSelect" onchange="updateBuilding()"><option value="">— Select house —</option><option value="A-101">A-101</option><option value="A-102">A-102</option><option value="A-103">A-103</option><option value="B-201">B-201</option><option value="B-202">B-202</option><option value="C-301">C-301</option><option value="C-302">C-302</option></select></td>
     </tr>
-    <tr><td class="label-cell">🏢 Building Name</td>
+    <tr><td class="label-cell">🏢 Tenant Name</td>
       <td class="value-cell"><input type="text" id="buildingName" placeholder="auto fills" readonly></td>
     </tr>
   </table>
@@ -439,23 +439,23 @@
   <!-- water meter advanced grid -->
   <div class="water-header"><i class="fa-solid fa-droplet" style="margin-right: 8px;"></i>WATER METER · ₹0.15 / 10L</div>
   <div class="water-grid">
-    <div class="water-item"><span style="font-size:0.75rem; opacity:0.7;">PREV (kL*10)</span><br><input type="number" id="prev" oninput="allowOnlyNumbers(this); calculate()" placeholder="0"></div>
-    <div class="water-item"><span style="font-size:0.75rem; opacity:0.7;">CURRENT</span><br><input type="number" id="current" oninput="allowOnlyNumbers(this); calculate()" placeholder="0"></div>
+    <div class="water-item"><span style="font-size:0.75rem; opacity:0.7;">PREV (kL*10)</span><br><input type="number" id="prev" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></div>
+    <div class="water-item"><span style="font-size:0.75rem; opacity:0.7;">CURRENT</span><br><input type="number" id="current" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></div>
     <div class="water-item" style="background:#e1efff;"><span style="font-size:0.75rem;">USAGE</span><br><span id="usage" style="font-size:1.4rem; font-weight:700;">0</span></div>
     <div class="water-item" style="background:#d3e5ff;"><span style="font-size:0.75rem;">CHARGES</span><br><span id="waterAmt" style="font-size:1.3rem; font-weight:700;">0.00</span></div>
   </div>
 
   <!-- RENT + CURRENT DUES -->
   <table class="responsive-table">
-    <tr><td class="label-cell">💰 Rent amount (₹)</td><td class="value-cell"><input type="number" id="rent" oninput="allowOnlyNumbers(this); calculate()" placeholder="0"></td></tr>
-    <tr><td class="label-cell">📆 Current dues / arrears (₹)</td><td class="value-cell"><input type="number" id="currentDues" oninput="allowOnlyNumbers(this); calculate()" placeholder="0"></td></tr>
+    <tr><td class="label-cell">💰 Rent amount (₹)</td><td class="value-cell"><input type="number" id="rent" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></td></tr>
+    <tr><td class="label-cell">📆 Current dues / arrears (₹)</td><td class="value-cell"><input type="number" id="currentDues" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></td></tr>
   </table>
 
   <!-- ADDITIONAL CHARGES -->
   <table class="responsive-table">
-    <tr><td class="label-cell">🧾 Sanitary / sewerage (₹)</td><td class="value-cell"><input type="number" id="sanitary" oninput="allowOnlyNumbers(this); calculate()" placeholder="0"></td></tr>
-    <tr><td class="label-cell">🅿️ Parking / vehicle (₹)</td><td class="value-cell"><input type="number" id="parking" oninput="allowOnlyNumbers(this); calculate()" placeholder="0"></td></tr>
-    <tr><td class="label-cell">📌 Other charges (₹)</td><td class="value-cell"><input type="number" id="otherCharges" oninput="allowOnlyNumbers(this); calculate()" placeholder="0"></td></tr>
+    <tr><td class="label-cell">🧾 Sanitary / sewerage (₹)</td><td class="value-cell"><input type="number" id="sanitary" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></td></tr>
+    <tr><td class="label-cell">🅿️ Parking / vehicle (₹)</td><td class="value-cell"><input type="number" id="parking" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></td></tr>
+    <tr><td class="label-cell">📌 Other charges (₹)</td><td class="value-cell"><input type="number" id="otherCharges" oninput="allowOnlyNumbers(this); calculate()" placeholder=""></td></tr>
   </table>
 
   <!-- GRAND TOTAL -->
@@ -514,9 +514,9 @@
   document.getElementById("billDate").innerText = dd+'-'+mm+'-'+yyyy;
 
   const buildingMap = {
-    "A-101": "Sree Nilayam", "A-102": "Sree Nilayam", "A-103": "Sree Nilayam",
-    "B-201": "Anand Bhavan", "B-202": "Anand Bhavan",
-    "C-301": "Krishna Kunj", "C-302": "Krishna Kunj"
+    "A-101": "Ram", "A-102": "Charan", "A-103": "Kiran",
+    "B-201": "Anand", "B-202": "Gill",
+    "C-301": "Krishna", "C-302": "Muni"
   };
 
   function updateBuilding() {
