@@ -416,20 +416,20 @@ button:hover {
 	
 	    <!-- WATER BILL SECTION (Full Width) -->
     <div class="water-section">
-        <div class="section-title">💧 WATER CONSUMPTION ( 1L = 0.15 Paisa & Total Litres * 10 = Water Bill)</div>
+        <div class="section-title">💧 WATER CONSUMPTION ( Total Liters * 0.15 * 10)</div>
         <table class="water-table">
             <thead>
                 <tr>
-                    <th style="width:25%">Previous Reading (KL)</th>
-                    <th style="width:25%">Current Reading (KL)</th>
-                    <th style="width:25%">Usage (KL)</th>
+                    <th style="width:25%">Previous Reading</th>
+                    <th style="width:25%">Current Reading</th>
+                    <th style="width:25%">Usage</th>
                     <th style="width:25%">Water Amount (₹)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="center"><input type="number" id="prev" value="" step="any" placeholder="0" oninput="allowOnlyNumbers(this)"></td>
-                    <td class="center"><input type="number" id="current" value="" step="any" placeholder="0" oninput="allowOnlyNumbers(this)"></td>
+                    <td class="center"><input type="number" id="prev" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
+                    <td class="center"><input type="number" id="current" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
                     <td class="center" id="usage">0.00</td>
                     <td class="center" id="waterAmt">0.00</td>
                 </tr>
@@ -449,11 +449,11 @@ button:hover {
                 <tbody>
                     <tr>
                         <td class="label-cell">🏠 Rent Amount (₹)</td>
-                        <td><input type="number" id="rent" value="" step="any" placeholder="Enter rent" oninput="allowOnlyNumbers(this)"></td>
+                        <td><input type="number" id="rent" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
                     </tr>
                     <tr>
                         <td class="label-cell">⚡ Current Bill / Electricity (₹)</td>
-                        <td><input type="number" id="currentBill" value="" step="any" placeholder="Electricity charges" oninput="allowOnlyNumbers(this)"></td>
+                        <td><input type="number" id="currentBill" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
                     </tr>
                 </tbody>
             </table>
@@ -468,19 +468,19 @@ button:hover {
                 <tbody>
                     <tr>
                         <td class="label-cell">💰 Arrears (Previous Dues)</td>
-                        <td><input type="number" id="arrears" value="" step="any" placeholder="Enter arrears" oninput="allowOnlyNumbers(this)"></td>
+                        <td><input type="number" id="arrears" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
                     </tr>
                     <tr>
                         <td class="label-cell">🔧 Maintenance Charges</td>
-                        <td><input type="number" id="maintenance" value="" step="any" placeholder="Enter maintenance" oninput="allowOnlyNumbers(this)"></td>
+                        <td><input type="number" id="maintenance" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
                     </tr>
                     <tr>
                         <td class="label-cell">🧹 Sanitary / SWM Charges</td>
-                        <td><input type="number" id="sanitary" value="" step="any" placeholder="Enter sanitary fee" oninput="allowOnlyNumbers(this)"></td>
+                        <td><input type="number" id="sanitary" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
                     </tr>
                     <tr>
                         <td class="label-cell">🅿️ Parking Fee</td>
-                        <td><input type="number" id="parking" value="" step="any" placeholder="Enter parking charges" oninput="allowOnlyNumbers(this)"></td>
+                        <td><input type="number" id="parking" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
                     </tr>
                 </tbody>
             </table>
