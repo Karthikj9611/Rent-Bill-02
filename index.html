@@ -750,7 +750,7 @@ async function shareViaWhatsApp() {
         const file = new File([pdfBlob], `Rent_Bill_${document.getElementById("billNo").innerText}.pdf`, { type: 'application/pdf' });
         
         // Prepare text message with bill summary
-        const flatNo = document.getElementById("house").options[document.getElementById("house").selectedIndex]?.text || "N/A";
+        const flatNo = document.getElementById("house").selectedOptions[0]?.text || "N/A";
         const tenantName = document.getElementById("name").value || "N/A";
         const totalAmount = document.getElementById("total").innerText;
         const billNoSpan = document.getElementById("billNo").innerText;
