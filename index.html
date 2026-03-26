@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>KR Rent Bill</title>
+<title>KR Rent Bill - WhatsApp Share</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
@@ -336,11 +336,17 @@ input::-webkit-inner-spin-button {
 }
 .dev-sign a:nth-child(2) { background: #0a58ca; }
 .dev-sign a:nth-child(3) { background: #25D366; }
+
+/* BUTTON GROUP STYLES */
 .controls {
     text-align: center;
     margin: 20px auto 10px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
-button {
+.btn {
     background: #1f4e8c;
     border: none;
     padding: 10px 28px;
@@ -351,6 +357,23 @@ button {
     cursor: pointer;
     transition: 0.2s;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-wa {
+    background: #25D366;
+}
+.btn-wa:hover {
+    background: #128C7E;
+    transform: translateY(-1px);
+}
+.btn-pdf {
+    background: #dc3545;
+}
+.btn-pdf:hover {
+    background: #b02a37;
+    transform: translateY(-1px);
 }
 button:hover {
     background: #0e3a6b;
@@ -377,13 +400,6 @@ button:hover {
 <body>
 
 <div id="bill">
-<!--
-    <div class="watermark">
-        <span class="black">SS</span><span class="red">R</span>
-    </div>
-	
--->
-
     <!-- HEADER -->
     <div class="header">
         <div class="address">
@@ -442,7 +458,7 @@ button:hover {
                     <td class="center" id="waterAmt">0.00</td>
                 </tr>
             </tbody>
-        </table>
+         </table>
     </div>
 
 
@@ -452,7 +468,7 @@ button:hover {
         <div class="bill-left">
             <table class="rent-table">
                 <thead>
-                    <tr><th colspan="2">🏠 RENT & UTILITY BILLS</th></tr>
+                    <tr><th colspan="2">🏠 RENT & UTILITY BILLS</th> </tr>
                 </thead>
                 <tbody>
                     <tr>
@@ -464,14 +480,14 @@ button:hover {
                         <td><input type="number" id="currentBill" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
                     </tr>
                 </tbody>
-            </table>
+             </table>
         </div>
 
         <!-- RIGHT SIDE: Combined Table - Arrears, Maintenance, Sanitary, Parking -->
         <div class="bill-right">
             <table class="combined-table">
                 <thead>
-                    <tr><th colspan="2">💰 ADDITIONAL CHARGES & ARREARS</th></tr>
+                    <tr><th colspan="2">💰 ADDITIONAL CHARGES & ARREARS</th> </tr>
                 </thead>
                 <tbody>
                     <tr>
@@ -491,7 +507,7 @@ button:hover {
                         <td><input type="number" id="parking" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
                     </tr>
                 </tbody>
-            </table>
+             </table>
         </div>
     </div>
 
@@ -502,11 +518,11 @@ button:hover {
         <tr>
             <td class="label-cell" style="width: 65%; font-size: 14px; background: linear-gradient(135deg, #e9ecef, #dee2e6); font-weight: 800; color: #1f4e8c; text-align: left; padding: 12px 20px;">
                 💰 GRAND TOTAL PAYABLE (₹)
-            </td>
+             </td>
             <td class="center total-highlight" id="total" style="font-size: 22px; font-weight: 800; color: #b91c1c; background: #fff2f0; padding: 12px 20px; width: 35%; text-align: right;">
                 ₹ 0.00
-            </td>
-        </tr>
+             </td>
+         </tr>
     </tbody>
 </table>
 
@@ -519,8 +535,8 @@ button:hover {
                     <span style="font-weight: 800; font-size: 12px; color: #b63e32; background: #fff0d0; padding: 4px 12px; border-radius: 20px;">📝 AMOUNT IN WORDS</span>
                     <span style="font-weight: 600; font-size: 11px; color: #b63e32; letter-spacing: 0.3px; flex: 1;" id="totalWords">Zero Rupees Only</span>
                 </div>
-            </td>
-        </tr>
+             </td>
+         </tr>
     </tbody>
 </table>
 
@@ -557,8 +573,11 @@ button:hover {
 </a>
         <a href="https://wa.me/919611459960" target="_blank"><i class="fab fa-whatsapp"></i> </a>
     </div>
+    
+    <!-- BUTTON GROUP: PDF + WHATSAPP SHARE -->
     <div class="controls">
-        <button onclick="downloadPDF()"><i class="fas fa-download"></i> Download PDF</button>
+        <button class="btn btn-pdf" onclick="downloadPDF()"><i class="fas fa-download"></i> Download PDF</button>
+        <button class="btn btn-wa" onclick="shareViaWhatsApp()"><i class="fab fa-whatsapp"></i> Share via WhatsApp</button>
     </div>
 </div>
 
@@ -650,46 +669,133 @@ button:hover {
         calculate();
     }
     
-    // PDF generation
-function downloadPDF(){
-    let controlsDiv = document.querySelector(".controls");
-    let devBar = document.querySelector(".dev-sign");
+    // Helper: generate PDF Blob without UI interference for sharing
+    async function generatePDFBlob() {
+        // Create a temporary clone to avoid altering visible UI while capturing
+        const originalBill = document.getElementById("bill");
+        const cloneBill = originalBill.cloneNode(true);
+        // Ensure all inputs in clone have calculated values (they are cloned with values)
+        // But for safety, we need to recompute display values in clone? Not necessary because values are already set.
+        // Hide watermark if any extra modifications needed? But it's fine.
+        // Hide control buttons inside clone if present
+        const cloneControls = cloneBill.querySelector(".controls");
+        if(cloneControls) cloneControls.style.display = "none";
+        // Also hide dev-sign interactive elements but keep signature footers (they should print)
+        const cloneDev = cloneBill.querySelector(".dev-sign");
+        if(cloneDev) cloneDev.style.display = "none";
+        
+        // Create temporary container
+        const tempDiv = document.createElement("div");
+        tempDiv.style.position = "absolute";
+        tempDiv.style.top = "-9999px";
+        tempDiv.style.left = "-9999px";
+        tempDiv.appendChild(cloneBill);
+        document.body.appendChild(tempDiv);
+        
+        try {
+            const opt = {
+                margin: [0.2, 0.2, 0.2, 0.2],
+                image: { type: 'jpeg', quality: 0.98 },
+                enableLinks: true,
+                html2canvas: { scale: 3, useCORS: true, letterRendering: true, logging: false },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            const pdf = await html2pdf().set(opt).from(cloneBill).outputPdf('blob');
+            document.body.removeChild(tempDiv);
+            return pdf;
+        } catch (err) {
+            document.body.removeChild(tempDiv);
+            console.error("PDF generation error:", err);
+            throw err;
+        }
+    }
     
-    // Only hide the download button and dev bar links, NOT the signature footer
-    if(controlsDiv) controlsDiv.style.display = "none";
-    // Don't hide devBar anymore - let it print
-    // if(devBar) devBar.style.display = "none";
+    // Download PDF function (original behavior but improved)
+    async function downloadPDF() {
+        try {
+            const pdfBlob = await generatePDFBlob();
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(pdfBlob);
+            link.href = url;
+            link.download = `KR_Rent_Bill_${document.getElementById("billNo").innerText}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            alert("Error generating PDF. Please try again.");
+            console.error(error);
+        }
+    }
     
-    const element = document.getElementById("bill");
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    
-    const opt = {
-        margin: [0.2, 0.2, 0.2, 0.2],
-        filename: `SSR_Rent_Bill_${document.getElementById("billNo").innerText}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        enableLinks: true,
-        html2canvas: { 
-            scale: 3, 
-            useCORS: true, 
-            letterRendering: true, 
-            scrollY: 0,
-            logging: false
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    
-    html2pdf().set(opt).from(element).save().then(() => {
-        if(controlsDiv) controlsDiv.style.display = "block";
-        // Don't restore devBar display if it wasn't hidden
-        // if(devBar) devBar.style.display = "flex";
-        document.body.style.overflow = originalOverflow;
-    }).catch(err => {
-        console.warn(err);
-        if(controlsDiv) controlsDiv.style.display = "block";
-        document.body.style.overflow = originalOverflow;
-    });
-}
+    // SHARE VIA WHATSAPP: generate PDF, convert to data URL, then share via WhatsApp with a custom message
+    async function shareViaWhatsApp() {
+        // Show loading indicator optional
+        const waBtn = document.querySelector('.btn-wa');
+        const originalText = waBtn.innerHTML;
+        waBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Generating...';
+        waBtn.disabled = true;
+        
+        try {
+            // Generate PDF blob
+            const pdfBlob = await generatePDFBlob();
+            // Create a File object for WhatsApp sharing
+            const file = new File([pdfBlob], `Rent_Bill_${document.getElementById("billNo").innerText}.pdf`, { type: 'application/pdf' });
+            
+            // Prepare text message with bill summary
+            const flatNo = document.getElementById("house").value || "N/A";
+            const tenantName = document.getElementById("name").value || "N/A";
+            const totalAmount = document.getElementById("total").innerText;
+            const billNoSpan = document.getElementById("billNo").innerText;
+            const billDateSpan = document.getElementById("billDate").innerText;
+            
+            const message = `🏠 *KR Enclave Rent Bill* 🧾\n\n` +
+                            `📌 Bill No: ${billNoSpan}\n` +
+                            `📅 Date: ${billDateSpan}\n` +
+                            `🏢 Flat: ${flatNo}\n` +
+                            `👤 Tenant: ${tenantName}\n` +
+                            `💰 Total Amount: ${totalAmount}\n\n` +
+                            `📎 Attached PDF has complete details.\n` +
+                            `Thank you! - KR Management`;
+            
+            // For mobile devices: WhatsApp Web/App share using web share API (if available) with file
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        title: 'KR Rent Bill',
+                        text: message,
+                        files: [file]
+                    });
+                    waBtn.innerHTML = originalText;
+                    waBtn.disabled = false;
+                    return;
+                } catch (shareErr) {
+                    // If user cancels share or fails, fallback to WhatsApp direct link without file attachment (since Web Share fails sometimes)
+                    console.warn("Web share failed, fallback to text link", shareErr);
+                }
+            }
+            
+            // Fallback: For desktop or when share API not available, we open WhatsApp with text + note to download separately.
+            // To make it smooth: we can create a downloadable link for them or use wa.me with custom text.
+            // Better: Show a friendly alert and also open WhatsApp with message, letting user know PDF is ready for download separately.
+            // Since directly attaching PDF via wa.me is not possible (only text), we'll compose a message with a note.
+            const encodedMsg = encodeURIComponent(message + "\n\n📄 PDF generated. Please download using the PDF button if needed.");
+            const phoneNumber = "919611459960"; // management number, or user can set target? Here we open chat with management number, but user can share with anyone.
+            const waLink = `https://wa.me/${phoneNumber}?text=${encodedMsg}`;
+            window.open(waLink, '_blank');
+            
+            // Also trigger download automatically so user has file ready to attach manually if needed
+            await downloadPDF();
+            
+            alert("PDF downloaded separately. WhatsApp chat opened with bill summary. You can attach the downloaded PDF manually if sharing via WhatsApp.");
+        } catch (err) {
+            console.error("WhatsApp share error:", err);
+            alert("Unable to generate PDF. Please try again.");
+        } finally {
+            waBtn.innerHTML = originalText;
+            waBtn.disabled = false;
+        }
+    }
     
     // initial calculation
     calculate();
@@ -699,39 +805,32 @@ function downloadPDF(){
         e.preventDefault();
     });
     
-    // All fields are empty by default - no prefilled values
-    // Just ensure calculation runs on empty inputs (already done)
-	
-	
-	// House to Building mapping
-// Traditional unique Indian names
-const houseToBuilding = {
-    'A-101': 'Ashirwad',
-    'A-102': 'Kailash',
-    'A-103': 'Vaikunth',
-    'B-201': 'Madhav',
-    'B-202': 'Gokul',
-    'B-203': 'Vrindavan',
-    'C-301': 'Ayodhya',
-    'C-302': 'Badrinath',
-    'C-303': 'Kedarnath'
-};
+    // House to Building mapping
+    const houseToBuilding = {
+        'A-101': 'Ashirwad',
+        'A-102': 'Kailash',
+        'A-103': 'Vaikunth',
+        'B-201': 'Madhav',
+        'B-202': 'Gokul',
+        'B-203': 'Vrindavan',
+        'C-301': 'Ayodhya',
+        'C-302': 'Badrinath',
+        'C-303': 'Kedarnath'
+    };
 
-// Function to load Tenant Name when house is selected
-function loadBuildingName() {
-    const houseSelect = document.getElementById('house');
-    const buildingInput = document.getElementById('name');
-    const selectedHouse = houseSelect.value;
-    
-    if (selectedHouse && houseToBuilding[selectedHouse]) {
-        buildingInput.value = houseToBuilding[selectedHouse];
-    } else {
-        buildingInput.value = '';
+    function loadBuildingName() {
+        const houseSelect = document.getElementById('house');
+        const buildingInput = document.getElementById('name');
+        const selectedHouse = houseSelect.value;
+        
+        if (selectedHouse && houseToBuilding[selectedHouse]) {
+            buildingInput.value = houseToBuilding[selectedHouse];
+        } else {
+            buildingInput.value = '';
+        }
+        calculate(); // refresh total if needed (name doesn't affect total)
     }
-}
-
-// Add event listener to house dropdown
-document.getElementById('house').addEventListener('change', loadBuildingName);
+    document.getElementById('house').addEventListener('change', loadBuildingName);
 </script>
 </body>
 </html>
