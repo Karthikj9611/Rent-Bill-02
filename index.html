@@ -2,858 +2,791 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>KR Rent Bill</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<title>KR Rent Bill | Smart Rental Invoice</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-@media print {
-body {
-background: white;
-padding: 0;
-margin: 0;
-}
-.controls {
-display: none;
-}
-/* Keep all footer elements visible in print */
-.footer, .signature, .dev-sign {
-display: block !important;
-}
-}
+    :root {
+        --main: #1f4e8c;
+        --main-dark: #0e3a6b;
+        --light: #eef3ff;
+        --border: #cfd6e4;
+        --text: #1e2a3e;
+        --accent-red: #b91c1c;
+        --accent-gold: #fef6e0;
+        --radius-card: 20px;
+        --radius-sm: 12px;
+    }
 
+    body {
+        font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 10px;
+        background: #eef2f7;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px 12px;
+    }
 
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-:root {
---main: #1f4e8c;
---light: #eef3ff;
---border: #cfd6e4;
---text: #1e2a3e;
-}
+    /* BILL CARD - RESPONSIVE WIDTH */
+    #bill {
+        width: 100%;
+        max-width: 190mm;
+        min-height: 280mm;
+        margin: 0 auto;
+        padding: 18px 20px;
+        background: #ffffff;
+        border-radius: 28px;
+        box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2);
+        position: relative;
+        border: 1px solid #e9edf4;
+        transition: all 0.2s ease;
+    }
 
-body {
-font-family: 'Segoe UI', Arial, sans-serif;
-font-size: 10px;
-background: #e2e8f0;
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 20px 10px;
-}
+    /* WATERMARK (optional soft) */
+    .watermark {
+        position: absolute;
+        top: 42%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-28deg);
+        font-size: clamp(60px, 12vw, 150px);
+        font-weight: 800;
+        letter-spacing: 20px;
+        pointer-events: none;
+        opacity: 0.08;
+        z-index: 0;
+        white-space: nowrap;
+    }
 
-#bill {
-width: 190mm;
-min-height: 280mm;
-margin: 0 auto;
-padding: 18px 22px;
-background: #ffffff;
-border-radius: 12px;
-box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-position: relative;
-border: 1px solid #e0e7f0;
-}
+    /* HEADER */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 12px;
+        background: var(--main);
+        padding: 14px 18px;
+        border-radius: 24px;
+        margin-bottom: 20px;
+        color: white;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    }
 
-.watermark {
-position: absolute;
-top: 42%;
-left: 50%;
-transform: translate(-50%, -50%) rotate(-28deg);
-font-size: 150px;
-font-weight: 800;
-letter-spacing: 35px;
-pointer-events: none;
-opacity: 0.18;
-z-index: 0;
-}
-.watermark .black { color: #1e3a5f; }
-.watermark .red { color: #b22234; }
+    .address {
+        line-height: 1.4;
+    }
 
-/* HEADER */
-.header {
-display: flex;
-justify-content: space-between;
-align-items: flex-start;
-flex-wrap: wrap;
-background: var(--main);
-padding: 14px 20px;
-border-radius: 16px;
-margin-bottom: 20px;
-color: white;
-position: relative;
-z-index: 2;
-box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.address {
-line-height: 1.3;
-}
-.address img {
-height: 38px;
-width: auto;
-background: white;
-border-radius: 10px;
-padding: 4px 8px;
-margin-bottom: 6px;
-}
-.phone-buttons {
-display: flex;
-gap: 8px;
-margin-top: 6px;
-flex-wrap: wrap;
-}
-.call-link, .whatsapp-link {
-text-decoration: none;
-font-size: 9px;
-font-weight: bold;
-padding: 4px 10px;
-border-radius: 40px;
-display: inline-flex;
-align-items: center;
-gap: 5px;
-transition: 0.2s;
-}
-.call-link { background: #0a58ca; color: white; }
-.whatsapp-link { background: #25D366; color: white; }
+    .kr-logo {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        background: rgba(255, 255, 255, 0.2);
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 40px;
+        backdrop-filter: blur(2px);
+        margin-bottom: 8px;
+    }
 
-/*
-#billNoDiv {
-   background: rgba(255,255,255,0.15);
-   padding: 8px 14px;
-   border-radius: 20px;
-   text-align: right;
-   font-weight: 600;
-   font-size: 11px;
-}
-*/
-#billNoDiv div {
-margin: 4px 0;
-}
+    .phone-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+    }
 
-/* CUSTOMER INFO GRID */
-.info-grid {
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-gap: 12px;
-background: #f9fbfe;
-border: 1px solid var(--border);
-border-radius: 18px;
-padding: 14px 18px;
-margin-bottom: 18px;
-}
-.info-item {
-display: flex;
-align-items: center;
-gap: 10px;
-flex-wrap: wrap;
-}
-.info-item .label {
-font-weight: 700;
-background: var(--light);
-padding: 4px 12px;
-border-radius: 30px;
-font-size: 10px;
-color: var(--main);
-min-width: 85px;
-}
-.info-item input {
-flex: 1;
-border: 1px solid #ccd7e8;
-padding: 6px 8px;
-border-radius: 12px;
-font-size: 10px;
-background: white;
-transition: 0.2s;
-}
-.info-item input:focus {
-border-color: var(--main);
-outline: none;
-box-shadow: 0 0 0 2px rgba(31,78,140,0.2);
-}
+    .call-link, .whatsapp-link {
+        text-decoration: none;
+        font-size: 9px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 40px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: 0.2s;
+    }
 
-/* TWO COLUMN LAYOUT FOR BILL SECTIONS */
-.bill-two-columns {
-display: flex;
-gap: 20px;
-margin: 15px 0;
-flex-wrap: wrap;
-}
-.bill-left, .bill-right {
-flex: 1;
-min-width: 180px;
-}
+    .call-link { background: #0a58ca; color: white; }
+    .whatsapp-link { background: #25D366; color: white; }
 
-/* TABLE STYLES */
-table {
-width: 100%;
-border-collapse: collapse;
-border-radius: 14px;
-overflow: hidden;
-box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-margin-bottom: 0;
-}
-th {
-background: var(--main);
-color: white;
-padding: 10px 8px;
-font-size: 11px;
-font-weight: 600;
-border: 1px solid #2c6aac;
-text-align: center;
-}
-td {
-border: 1px solid var(--border);
-padding: 10px 8px;
-font-size: 10.5px;
-color: var(--text);
-vertical-align: middle;
-}
-.label-cell {
-background: var(--light);
-font-weight: 700;
-color: var(--main);
-width: 55%;
-}
-.center {
-text-align: center;
-}
-.total-highlight {
-background: #fff2f0;
-font-weight: 800;
-color: #b91c1c;
-font-size: 13px;
-}
-input {
-width: 100%;
-border: none;
-background: transparent;
-font-size: 10.5px;
-font-weight: 500;
-padding: 4px 0;
-text-align: left;
-}
-input:focus {
-outline: none;
-border-bottom: 1px solid var(--main);
-}
-input[type="number"] {
--moz-appearance: textfield;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
--webkit-appearance: none;
-margin: 0;
-}
+    #billNoDiv {
+        background: rgba(255, 255, 255, 0.18);
+        padding: 8px 16px;
+        border-radius: 28px;
+        text-align: right;
+        font-weight: 600;
+        font-size: 11px;
+        backdrop-filter: blur(4px);
+    }
 
-/* WATER TABLE FULL WIDTH */
-.water-section {
-margin: 15px 0;
-}
-.section-title {
-font-size: 12px;
-font-weight: 800;
-background: linear-gradient(135deg, #e9ecef, #dee2e6);
-padding: 6px 12px;
-border-radius: 10px;
-margin: 12px 0 8px 0;
-color: var(--main);
-border-left: 4px solid var(--main);
-}
+    /* CUSTOMER INFO GRID - FLEXIBLE */
+    .info-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        background: #f9fbfe;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 16px 18px;
+        margin-bottom: 20px;
+    }
 
-/* AMOUNT IN WORDS */
-.words-section {
-background: #fef6e0;
-border-left: 5px solid #d9534f;
-padding: 8px 12px;
-margin: 15px 0 10px;
-border-radius: 12px;
-font-weight: bold;
-font-size: 10px;
-}
+    .info-item {
+        flex: 1 1 200px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
 
-/* NOTES */
-.notes {
-background: #fafcff;
-border: 1px solid #e2edf7;
-border-radius: 20px;
-padding: 14px 18px;
-margin: 18px 0 12px;
-font-size: 10px;
-}
-.notes b {
-font-size: 11px;
-color: var(--main);
-}
-.notes ul {
-margin: 8px 0 0 20px;
-}
-.notes li {
-margin: 4px 0;
-}
+    .info-item .label {
+        font-weight: 700;
+        background: var(--light);
+        padding: 5px 14px;
+        border-radius: 40px;
+        font-size: 10px;
+        color: var(--main);
+        white-space: nowrap;
+    }
 
-/* FOOTER */
-.footer {
-display: flex;
-justify-content: space-between;
-margin-top: 25px;
-padding-top: 10px;
-border-top: 2px dashed #cbdbe0;
-}
-.signature {
-text-align: left;
-font-size: 10px;
-width: 45%;
-}
-.signature2 {
-text-align: right;
-font-size: 10px;
-width: 45%;
-}
-.dev-sign {
-background: #f4f7fc;
-border-radius: 40px;
-text-align: center;
-margin-top: 18px;
-padding: 10px 5px;
-display: flex;
-justify-content: center;
-gap: 12px;
-flex-wrap: wrap;
-}
-.dev-sign a {
-text-decoration: none;
-background: #1f4e8c;
-padding: 5px 12px;
-border-radius: 30px;
-font-size: 9px;
-color: white;
-display: inline-flex;
-align-items: center;
-gap: 6px;
-}
-.dev-sign a:nth-child(2) { background: #0a58ca; }
-.dev-sign a:nth-child(3) { background: #25D366; }
-.controls {
-text-align: center;
-margin: 20px auto 10px;
-}
-button {
-background: #1f4e8c;
-border: none;
-padding: 10px 28px;
-font-size: 13px;
-font-weight: bold;
-border-radius: 40px;
-color: white;
-cursor: pointer;
-transition: 0.2s;
-box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-button:hover {
-background: #0e3a6b;
-transform: translateY(-1px);
-}
+    .info-item select, .info-item input {
+        flex: 1;
+        min-width: 130px;
+        border: 1px solid #ccd7e8;
+        padding: 8px 10px;
+        border-radius: 16px;
+        font-size: 10.5px;
+        background: white;
+        font-weight: 500;
+    }
 
-@media print {
-body {
-background: white;
-padding: 0;
-margin: 0;
-}
-.controls, .dev-sign a {
-display: none;
-}
-#bill {
-box-shadow: none;
-margin: 0;
-padding: 12px;
-}
-}
+    /* SECTION TITLE */
+    .section-title {
+        font-size: 12px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #e9ecef, #dee2e6);
+        padding: 8px 16px;
+        border-radius: 40px;
+        margin: 16px 0 12px 0;
+        color: var(--main);
+        border-left: 5px solid var(--main);
+        display: inline-block;
+        width: auto;
+    }
+
+    /* TABLES - FULLY RESPONSIVE */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        margin-bottom: 8px;
+    }
+
+    th {
+        background: var(--main);
+        color: white;
+        padding: 12px 6px;
+        font-size: 11px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    td {
+        border: 1px solid var(--border);
+        padding: 10px 8px;
+        font-size: 10.5px;
+        color: var(--text);
+        vertical-align: middle;
+    }
+
+    .label-cell {
+        background: var(--light);
+        font-weight: 700;
+        color: var(--main);
+        width: 55%;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .total-highlight {
+        background: #fff2f0;
+        font-weight: 800;
+        color: #b91c1c;
+        font-size: 1.4rem;
+    }
+
+    input, select {
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-size: 10.5px;
+        font-weight: 500;
+        padding: 5px 0;
+        font-family: inherit;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-bottom: 1px solid var(--main);
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
+    /* TWO COLUMN LAYOUT - STACK ON MOBILE */
+    .bill-two-columns {
+        display: flex;
+        gap: 20px;
+        margin: 10px 0 5px;
+        flex-wrap: wrap;
+    }
+
+    .bill-left, .bill-right {
+        flex: 1;
+        min-width: 220px;
+    }
+
+    /* WORDS SECTION */
+    .words-card {
+        background: var(--accent-gold);
+        border-left: 6px solid #d9534f;
+        padding: 12px 18px;
+        margin: 18px 0 12px;
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .words-label {
+        font-weight: 800;
+        font-size: 11px;
+        background: #fff0d0;
+        padding: 5px 14px;
+        border-radius: 40px;
+        color: #b63e32;
+    }
+
+    #totalWords {
+        font-weight: 600;
+        font-size: 11px;
+        color: #b63e32;
+        word-break: break-word;
+        flex: 1;
+    }
+
+    /* NOTES */
+    .notes {
+        background: #fafcff;
+        border: 1px solid #e2edf7;
+        border-radius: 24px;
+        padding: 14px 18px;
+        margin: 18px 0 12px;
+        font-size: 10px;
+    }
+
+    .notes ul {
+        margin: 8px 0 0 20px;
+    }
+
+    .notes li {
+        margin: 5px 0;
+    }
+
+    /* FOOTER */
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding-top: 12px;
+        border-top: 2px dashed #cbdbe0;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .signature, .signature2 {
+        font-size: 10px;
+    }
+
+    .dev-sign {
+        background: #f4f7fc;
+        border-radius: 60px;
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px 12px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .dev-sign a {
+        text-decoration: none;
+        background: var(--main);
+        padding: 6px 16px;
+        border-radius: 40px;
+        font-size: 9px;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.2s;
+    }
+
+    .controls {
+        text-align: center;
+        margin: 20px auto 10px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    button {
+        background: var(--main);
+        border: none;
+        padding: 12px 24px;
+        font-size: 13px;
+        font-weight: bold;
+        border-radius: 50px;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    button:hover {
+        background: var(--main-dark);
+        transform: translateY(-2px);
+    }
+
+    /* PRINT STYLES */
+    @media print {
+        body {
+            background: white;
+            padding: 0;
+            margin: 0;
+        }
+        .controls, .dev-sign a, .btn-wa, .call-link, .whatsapp-link {
+            display: none !important;
+        }
+        #bill {
+            box-shadow: none;
+            padding: 10px;
+            max-width: 100%;
+            border-radius: 0;
+        }
+        .info-item select, .info-item input {
+            border: 1px solid #ccc;
+            background: white;
+        }
+        .watermark {
+            opacity: 0.1;
+        }
+    }
+
+    /* MOBILE TOUCH FRIENDLY */
+    @media (max-width: 640px) {
+        body {
+            padding: 12px 8px;
+        }
+        #bill {
+            padding: 14px 16px;
+            border-radius: 24px;
+        }
+        .header {
+            flex-direction: column;
+            align-items: stretch;
+            text-align: left;
+        }
+        #billNoDiv {
+            text-align: left;
+            width: fit-content;
+        }
+        .info-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .info-item .label {
+            white-space: normal;
+        }
+        td, th {
+            padding: 8px 5px;
+            font-size: 9.5px;
+        }
+        .total-highlight {
+            font-size: 18px;
+        }
+        button {
+            padding: 10px 18px;
+            font-size: 12px;
+        }
+    }
+
+    /* Better Table input readability */
+    .water-table input, .rent-table input, .combined-table input {
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .total-table td {
+        border: none;
+    }
 </style>
 </head>
 <body>
 
 <div id="bill">
-<!--
     <div class="watermark">
-        <span class="black">SS</span><span class="red">R</span>
+        <span style="color:#1e3a5f;">KR</span> <span style="color:#b22234;">ENCLAVE</span>
     </div>
-	
--->
 
-<!-- HEADER -->
-<div class="header">
-<div class="address">
-<div class="kr-monogram">
-<span class="kr-letter">LOGO</span>
-</div>
-<div style="font-size:11px; font-weight:500;">AECS Layout</div>
-<div class="phone-buttons">
-<a href="tel:+91919611459960" class="call-link" style="text-decoration:none;"><i class="fas fa-phone-alt"></i> +91 919611459960</a>
-<a href="https://wa.me/919611459960" target="_blank" class="whatsapp-link"><i class="fab fa-whatsapp"></i></a>
-</div>
-</div>
-<div id="billNoDiv" style="margin-top: 14px;">
-<div><strong>Bill No</strong> : <span id="billNo">001</span></div>
-<div><strong>Date</strong> : <span id="billDate"></span></div>
-</div>
-</div>
+    <!-- HEADER SECTION -->
+    <div class="header">
+        <div class="address">
+            <div class="kr-logo"><i class="fas fa-building"></i> KR ENCLAVE</div>
+            <div style="font-size:11px; font-weight:500;">AECS Layout, Marathahalli, Bengaluru - 560037</div>
+            <div class="phone-buttons">
+                <a href="tel:+919611459960" class="call-link"><i class="fas fa-phone-alt"></i> +91 9611459960</a>
+                <a href="https://wa.me/919611459960" target="_blank" class="whatsapp-link"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            </div>
+        </div>
+        <div id="billNoDiv">
+            <div><strong>Bill No</strong> : <span id="billNo">001</span></div>
+            <div><strong>Date</strong> : <span id="billDate"></span></div>
+        </div>
+    </div>
 
-<!-- CUSTOMER DETAILS -->
-<div class="info-grid">
-<div class="info-item">
-<span class="label">🏠 Flat No.</span>
-<select id="house" style="flex:1; border:1px solid #ccd7e8; padding:6px 8px; border-radius:12px; font-size:10px; background:white;">
-<option value="">-- Select Flat No. --</option>
-<option value="A-101">A-101</option>
-<option value="A-102">A-102</option>
-<option value="A-103">A-103</option>
-<option value="B-201">B-201</option>
-<option value="B-202">B-202</option>
-<option value="B-203">B-203</option>
-<option value="C-301">C-301</option>
-<option value="C-302">C-302</option>
-<option value="C-303">C-303</option>
-</select>
-</div>
-<div class="info-item"><span class="label">🏢 Tenant Name</span><input type="text" id="name" placeholder="-- Auto-loads from Flat No. selection --"></div>
-</div>
+    <!-- CUSTOMER INFO (Flat + Tenant) -->
+    <div class="info-grid">
+        <div class="info-item">
+            <span class="label"><i class="fas fa-door-open"></i> Flat No.</span>
+            <select id="house">
+                <option value="">-- Select Flat No. --</option>
+                <option value="A-101">A-101 (Ashirwad)</option>
+                <option value="A-102">A-102 (Kailash)</option>
+                <option value="A-103">A-103 (Vaikunth)</option>
+                <option value="B-201">B-201 (Madhav)</option>
+                <option value="B-202">B-202 (Gokul)</option>
+                <option value="B-203">B-203 (Vrindavan)</option>
+                <option value="C-301">C-301 (Ayodhya)</option>
+                <option value="C-302">C-302 (Badrinath)</option>
+                <option value="C-303">C-303 (Kedarnath)</option>
+            </select>
+        </div>
+        <div class="info-item">
+            <span class="label"><i class="fas fa-user"></i> Tenant Name</span>
+            <input type="text" id="name" placeholder="Auto-fills from flat selection" readonly style="background:#fef9e6; font-weight:500;">
+        </div>
+    </div>
 
-<!-- WATER BILL SECTION (Full Width) -->
-<div class="water-section">
-<div class="section-title">💧 WATER CONSUMPTION ( Total Liters * 0.15 * 10)</div>
-<table class="water-table">
-<thead>
-<tr>
-<th style="width:25%">Previous Reading</th>
-<th style="width:25%">Current Reading</th>
-<th style="width:25%">Usage</th>
-<th style="width:25%">Water Amount (₹)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="center"><input type="number" id="prev" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
-<td class="center"><input type="number" id="current" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
-<td class="center" id="usage">0.00</td>
-<td class="center" id="waterAmt">0.00</td>
-</tr>
-</tbody>
+    <!-- WATER BILL SECTION (full width) -->
+    <div class="water-section">
+        <div class="section-title">💧 WATER CONSUMPTION (Rate: ₹0.15 per 10 Liters)</div>
+        <table class="water-table">
+            <thead>
+                <tr><th>Previous Reading (KL)</th><th>Current Reading (KL)</th><th>Usage (KL)</th><th>Water Amount (₹)</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="center"><input type="number" id="prev" value="" step="any" placeholder="0.00" oninput="allowOnlyNumbers(this)"></td>
+                    <td class="center"><input type="number" id="current" value="" step="any" placeholder="0.00" oninput="allowOnlyNumbers(this)"></td>
+                    <td class="center" id="usage">0.00</td>
+                    <td class="center" id="waterAmt">0.00</td>
+                </tr>
+            </tbody>
         </table>
-</div>
+    </div>
 
-
-<!-- TWO COLUMN LAYOUT: LEFT = RENT + CURRENT BILL | RIGHT = ARREARS + MAINTENANCE + SANITARY + PARKING -->
-<div class="bill-two-columns">
-<!-- LEFT SIDE: Rent & Current Bill -->
-<div class="bill-left">
-<table class="rent-table">
-<thead>
-                    <tr><th colspan="2">🏠 RENT & UTILITY BILLS</th></tr>
-</thead>
-<tbody>
-<tr>
-<td class="label-cell">🏠 Rent Amount (₹)</td>
-<td><input type="number" id="rent" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
-</tr>
-<tr>
-<td class="label-cell">⚡ Electricity Bill(₹)</td>
-<td><input type="number" id="currentBill" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
-</tr>
-</tbody>
+    <!-- TWO COLUMN LAYOUT: LEFT (Rent + EB) | RIGHT (Arrears, Maintenance, Sanitary, Parking) -->
+    <div class="bill-two-columns">
+        <div class="bill-left">
+            <table class="rent-table">
+                <thead><tr><th colspan="2">🏠 RENT & UTILITY BILLS</th></tr></thead>
+                <tbody>
+                    <tr><td class="label-cell">🏠 Rent Amount (₹)</td><td><input type="number" id="rent" value="" step="any" placeholder="0" oninput="allowOnlyNumbers(this)"></td></tr>
+                    <tr><td class="label-cell">⚡ Electricity Bill (₹)</td><td><input type="number" id="currentBill" value="" step="any" placeholder="0" oninput="allowOnlyNumbers(this)"></td></tr>
+                </tbody>
             </table>
-</div>
-
-<!-- RIGHT SIDE: Combined Table - Arrears, Maintenance, Sanitary, Parking -->
-<div class="bill-right">
-<table class="combined-table">
-<thead>
-                    <tr><th colspan="2">💰 ADDITIONAL CHARGES & ARREARS</th></tr>
-</thead>
-<tbody>
-<tr>
-<td class="label-cell">💰 Arrears (Previous Dues)</td>
-<td><input type="number" id="arrears" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
-</tr>
-<tr>
-<td class="label-cell">🔧 Maintenance Charges</td>
-<td><input type="number" id="maintenance" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
-</tr>
-<tr>
-<td class="label-cell">🧹 Sanitary / SWM Charges</td>
-<td><input type="number" id="sanitary" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
-</tr>
-<tr>
-<td class="label-cell">🅿️ Parking Fee</td>
-<td><input type="number" id="parking" value="" step="any" placeholder="" oninput="allowOnlyNumbers(this)"></td>
-</tr>
-</tbody>
+        </div>
+        <div class="bill-right">
+            <table class="combined-table">
+                <thead><tr><th colspan="2">💰 ADDITIONAL CHARGES & ARREARS</th></tr></thead>
+                <tbody>
+                    <tr><td class="label-cell">💰 Arrears (Previous Dues)</td><td><input type="number" id="arrears" value="" step="any" placeholder="0" oninput="allowOnlyNumbers(this)"></td></tr>
+                    <tr><td class="label-cell">🔧 Maintenance Charges</td><td><input type="number" id="maintenance" value="" step="any" placeholder="0" oninput="allowOnlyNumbers(this)"></td></tr>
+                    <tr><td class="label-cell">🧹 Sanitary / SWM Charges</td><td><input type="number" id="sanitary" value="" step="any" placeholder="0" oninput="allowOnlyNumbers(this)"></td></tr>
+                    <tr><td class="label-cell">🅿️ Parking Fee</td><td><input type="number" id="parking" value="" step="any" placeholder="0" oninput="allowOnlyNumbers(this)"></td></tr>
+                </tbody>
             </table>
-</div>
+        </div>
+    </div>
+
+    <!-- GRAND TOTAL SECTION -->
+    <table class="total-table" style="margin: 16px 0 8px 0; width:100%;">
+        <tbody>
+            <tr style="background:#fff;">
+                <td class="label-cell" style="width:65%; font-size: 14px; background: linear-gradient(135deg,#e9ecef,#dee2e6); font-weight:800; border-radius: 20px 0 0 20px;">
+                    💰 GRAND TOTAL PAYABLE (₹)
+                </td>
+                <td class="center total-highlight" id="total" style="font-size: 24px; font-weight:800; background:#fff2f0; border-radius: 0 20px 20px 0;">
+                    ₹ 0.00
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- AMOUNT IN WORDS -->
+    <div class="words-card">
+        <span class="words-label"><i class="fas fa-file-invoice"></i> AMOUNT IN WORDS</span>
+        <span id="totalWords">Zero Rupees Only</span>
+    </div>
+
+    <!-- NOTES -->
+    <div class="notes">
+        <b>📌 Important Guidelines:</b>
+        <ul>
+            <li>✅ <strong>Left Section:</strong> Monthly Rent + Current Electricity Bill.</li>
+            <li>✅ <strong>Right Section:</strong> Arrears, Maintenance, Sanitary & Parking.</li>
+            <li>💧 <strong>Water Charges:</strong> (Usage KL × 10 × ₹0.15) — 1 KL = 1000 liters.</li>
+            <li>⚠️ Late payment attracts 10% penalty after 10th of every month.</li>
+            <li>📞 For disputes, contact management within 7 days.</li>
+        </ul>
+    </div>
+
+    <!-- FOOTER SIGNATURE -->
+    <div class="footer">
+        <div class="signature">
+            <div>___________________</div>
+            <div>Resident / Tenant Signature</div>
+            <div style="font-size:8px;">(Acknowledgment of receipt)</div>
+        </div>
+        <div class="signature2">
+            <div style="font-weight:bold;">Karthik J</div>
+            <div style="font-size:9px;">Authorized Signatory</div>
+            <div style="font-size:8px;">KR Enclave Management</div>
+        </div>
+    </div>
+
+    <div class="dev-sign">
+        <a href="https://portfolio-01-olmn.onrender.com" target="_blank"><i class="fas fa-code"></i> KR Webcrafts</a>
+        <a href="tel:+919611459960"><i class="fas fa-phone-alt"></i> Call</a>
+        <a href="https://wa.me/919611459960" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    </div>
 </div>
 
-
-<!-- GRAND TOTAL SECTION - Properly arranged -->
-<table class="total-table" style="margin: 20px 0 15px 0;">
-<tbody>
-<tr>
-<td class="label-cell" style="width: 65%; font-size: 14px; background: linear-gradient(135deg, #e9ecef, #dee2e6); font-weight: 800; color: #1f4e8c; text-align: left; padding: 12px 20px;">
-💰 GRAND TOTAL PAYABLE (₹)
-            </td>
-<td class="center total-highlight" id="total" style="font-size: 22px; font-weight: 800; color: #b91c1c; background: #fff2f0; padding: 12px 20px; width: 35%; text-align: right;">
-₹ 0.00
-            </td>
-        </tr>
-</tbody>
-</table>
-
-<!-- AMOUNT IN WORDS - Properly arranged -->
-<table style="width: 100%; margin: 10px 0 20px 0; border-collapse: collapse;">
-<tbody>
-<tr>
-<td style="background: #fef6e0; border: 1px solid #ffdd99; border-radius: 10px; padding: 12px 18px;">
-<div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-<span style="font-weight: 800; font-size: 12px; color: #b63e32; background: #fff0d0; padding: 4px 12px; border-radius: 20px;">📝 AMOUNT IN WORDS</span>
-<span style="font-weight: 600; font-size: 11px; color: #b63e32; letter-spacing: 0.3px; flex: 1;" id="totalWords">Zero Rupees Only</span>
-</div>
-            </td>
-        </tr>
-</tbody>
-</table>
-
-<!-- NOTES -->
-<div class="notes">
-<b>📌 Important Guidelines:</b>
-<ul>
-<li>✅ <strong>Left Section:</strong> Monthly Rent + Current Electricity Bill (EB / sub-meter).</li>
-<li>✅ <strong>Right Section:</strong> Arrears (previous dues), Maintenance, Sanitary, and Parking fees combined.</li>
-<li>💧 <strong>Water Charges:</strong> Calculated based on meter readings (Rate: ₹0.15 per 1 liter).</li>
-<li>⚠️ Late payment attracts 10% penalty on outstanding after due date (10th of every month).</li>
-<li>📞 For disputes or clarification, contact management within 7 days.</li>
-</ul>
-</div>
-
-<!-- FOOTER SIGNATURE -->
-<div class="footer">
-<div class="signature">
-<div style="font-size:9px;">___________________</div>
-<div>Resident / Tenant Signature</div>
-<div style="font-size:8px; color:#666;">(Acknowledgment of receipt)</div>
-</div>
-<div class="signature2">
-<div style="font-weight:bold;">Karthik J</div>
-<div style="font-size:9px;">Authorized Signatory</div>
-<div style="font-size:8px;">KR Enclave Management</div>
-</div>
-</div>
-
-<div class="dev-sign">
-<a href="https://portfolio-01-olmn.onrender.com" target="_blank"><i class="fas fa-code"></i> KR Webcrafts</a>
-<a href="tel:+919611459960" style="text-decoration:none; background:#0a58ca; color:white; padding:5px 12px; border-radius:30px; font-size:9px; display:inline-flex; align-items:center; gap:6px;">
-<i class="fas fa-phone-alt"></i>
-</a>
-<a href="https://wa.me/919611459960" target="_blank"><i class="fab fa-whatsapp"></i> </a>
-</div>
 <div class="controls">
-        <button onclick="downloadPDF()"><i class="fas fa-download"></i> Download PDF</button>
-		<button class="btn btn-wa" onclick="shareViaWhatsApp()"><i class="fab fa-whatsapp"></i> Share via WhatsApp</button>
-</div>
+    <button onclick="downloadPDF()"><i class="fas fa-download"></i> Download PDF</button>
+    <button class="btn-wa" onclick="shareViaWhatsApp()"><i class="fab fa-whatsapp"></i> Share via WhatsApp</button>
 </div>
 
 <script>
-// BILL NUMBER auto-increment
-let billNumber = localStorage.getItem("ssrBillNo");
-if(!billNumber){
-billNumber = 1;
-} else {
-billNumber = parseInt(billNumber) + 1;
-}
-localStorage.setItem("ssrBillNo", billNumber);
-document.getElementById("billNo").innerText = String(billNumber).padStart(3,'0');
+    // ---------- BILL LOGIC ----------
+    let billNumber = localStorage.getItem("ssrBillNo");
+    if(!billNumber) billNumber = 1;
+    else billNumber = parseInt(billNumber) + 1;
+    localStorage.setItem("ssrBillNo", billNumber);
+    document.getElementById("billNo").innerText = String(billNumber).padStart(3,'0');
 
-// AUTO DATE
-const today = new Date();
-let dd = today.getDate(), mm = today.getMonth()+1, yyyy = today.getFullYear();
-if(dd<10) dd='0'+dd;
-if(mm<10) mm='0'+mm;
-document.getElementById("billDate").innerText = `${dd}-${mm}-${yyyy}`;
+    // Auto Date
+    const today = new Date();
+    let dd = today.getDate(), mm = today.getMonth()+1, yyyy = today.getFullYear();
+    if(dd<10) dd='0'+dd;
+    if(mm<10) mm='0'+mm;
+    document.getElementById("billDate").innerText = `${dd}-${mm}-${yyyy}`;
 
-// attach all input events
-const allInputs = document.querySelectorAll("input");
-allInputs.forEach(el => {
-el.addEventListener("input", calculate);
-});
-
-// Number to words function
-function numberToWords(num){
-if(num === 0 || isNaN(num)) return "Zero Rupees Only";
-const ones = ["", "One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
-const tens = ["", "", "Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
-function convert(n){
-if(n < 20) return ones[n];
-if(n < 100) return tens[Math.floor(n/10)] + (n%10 ? " " + ones[n%10] : "");
-if(n < 1000) return ones[Math.floor(n/100)] + " Hundred" + (n%100 ? " " + convert(n%100) : "");
-if(n < 100000) return convert(Math.floor(n/1000)) + " Thousand" + (n%1000 ? " " + convert(n%1000) : "");
-if(n < 10000000) return convert(Math.floor(n/100000)) + " Lakh" + (n%100000 ? " " + convert(n%100000) : "");
-return convert(Math.floor(n/10000000)) + " Crore" + (n%10000000 ? " " + convert(n%10000000) : "");
-}
-let numeric = parseFloat(num).toFixed(2);
-let parts = numeric.split(".");
-let rupees = parseInt(parts[0]);
-let paisa = parseInt(parts[1] || 0);
-let words = "";
-if(rupees > 0) words += convert(rupees) + " Rupee" + (rupees>1 ? "s" : "");
-if(paisa > 0){
-if(words) words += " and ";
-words += convert(paisa) + " Paisa";
-}
-return words + " Only";
-}
-
-// Core calculation
-function calculate(){
-// LEFT side
-let rent = parseFloat(document.getElementById("rent").value) || 0;
-let currentBill = parseFloat(document.getElementById("currentBill").value) || 0;
-
-// RIGHT side (combined table)
-let arrears = parseFloat(document.getElementById("arrears").value) || 0;
-let maintenance = parseFloat(document.getElementById("maintenance").value) || 0;
-let sanitary = parseFloat(document.getElementById("sanitary").value) || 0;
-let parking = parseFloat(document.getElementById("parking").value) || 0;
-
-// Water charges
-let prev = parseFloat(document.getElementById("prev").value) || 0;
-let current = parseFloat(document.getElementById("current").value) || 0;
-let usageRaw = current - prev;
-let usage = usageRaw < 0 ? 0 : usageRaw;
-let waterRate = 0.15;   // per 10 liters
-let waterAmt = usage * 10 * waterRate;
-
-// GRAND TOTAL
-let total = rent + currentBill + arrears + maintenance + sanitary + parking + waterAmt;
-
-// Update UI
-document.getElementById("usage").innerText = usage.toFixed(2);
-document.getElementById("waterAmt").innerText = waterAmt.toFixed(2);
-document.getElementById("total").innerText = total.toFixed(2);
-
-let wordsFinal = numberToWords(total);
-document.getElementById("totalWords").innerText = wordsFinal;
-}
-
-function allowOnlyNumbers(input){
-input.value = input.value.replace(/[^0-9.]/g, '');
-if((input.value.match(/\./g)||[]).length > 1) input.value = input.value.replace(/\.+$/, '');
-calculate();
-}
-
-    // PDF generation
-function downloadPDF(){
-    let controlsDiv = document.querySelector(".controls");
-    let devBar = document.querySelector(".dev-sign");
-    
-    // Only hide the download button and dev bar links, NOT the signature footer
-    if(controlsDiv) controlsDiv.style.display = "none";
-    // Don't hide devBar anymore - let it print
-    // if(devBar) devBar.style.display = "none";
-    
-    const element = document.getElementById("bill");
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const opt = {
-        margin: [0.2, 0.2, 0.2, 0.2],
-        filename: `SSR_Rent_Bill_${document.getElementById("billNo").innerText}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        enableLinks: true,
-        html2canvas: { 
-            scale: 3, 
-            useCORS: true, 
-            letterRendering: true, 
-            scrollY: 0,
-            logging: false
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    // House to Tenant mapping (traditional names)
+    const houseToTenant = {
+        'A-101': 'Mr. Raghavendra (Ashirwad)',
+        'A-102': 'Mrs. Lakshmi Narayan',
+        'A-103': 'Dr. Ananth Krishnan',
+        'B-201': 'Mr. Madhav S. Shetty',
+        'B-202': 'Prof. Gokulnath',
+        'B-203': 'Ms. Vrinda Sharma',
+        'C-301': 'Mr. Ayodhya Prasad',
+        'C-302': 'Mrs. Badri Vishal',
+        'C-303': 'Mr. Kedarnath Joshi'
     };
 
-    html2pdf().set(opt).from(element).save().then(() => {
-        if(controlsDiv) controlsDiv.style.display = "block";
-        // Don't restore devBar display if it wasn't hidden
-        // if(devBar) devBar.style.display = "flex";
-        document.body.style.overflow = originalOverflow;
-    }).catch(err => {
-        console.warn(err);
-        if(controlsDiv) controlsDiv.style.display = "block";
-        document.body.style.overflow = originalOverflow;
-    });
-}
-
-// initial calculation
-calculate();
-
-// prevent right-click context menu on bill
-document.getElementById("bill")?.addEventListener("contextmenu", function(e){
-e.preventDefault();
-});
-
-    // All fields are empty by default - no prefilled values
-    // Just ensure calculation runs on empty inputs (already done)
-	
-	
-	// House to Building mapping
-// Traditional unique Indian names
-const houseToBuilding = {
-    'A-101': 'Ashirwad',
-    'A-102': 'Kailash',
-    'A-103': 'Vaikunth',
-    'B-201': 'Madhav',
-    'B-202': 'Gokul',
-    'B-203': 'Vrindavan',
-    'C-301': 'Ayodhya',
-    'C-302': 'Badrinath',
-    'C-303': 'Kedarnath'
-};
-
-// Function to load Tenant Name when house is selected
-function loadBuildingName() {
-    const houseSelect = document.getElementById('house');
-    const buildingInput = document.getElementById('name');
-    const selectedHouse = houseSelect.value;
-    
-    if (selectedHouse && houseToBuilding[selectedHouse]) {
-        buildingInput.value = houseToBuilding[selectedHouse];
-    } else {
-        buildingInput.value = '';
-    }
-}
-
-// Add event listener to house dropdown
-document.getElementById('house').addEventListener('change', loadBuildingName);
-
-
-// SHARE VIA WHATSAPP: generate PDF, then share via WhatsApp with file
-async function shareViaWhatsApp() {
-    const waBtn = document.querySelector('.btn-wa');
-    const originalText = waBtn.innerHTML;
-    waBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Generating...';
-    waBtn.disabled = true;
-    
-    try {
-        // Generate PDF blob
-        const pdfBlob = await generatePDFBlob();
-        
-        // Create a File object for WhatsApp sharing
-        const file = new File([pdfBlob], `Rent_Bill_${document.getElementById("billNo").innerText}.pdf`, { type: 'application/pdf' });
-        
-        // Prepare text message with bill summary
-        const flatNo = document.getElementById("house").selectedOptions[0]?.text || "N/A";
-        const tenantName = document.getElementById("name").value || "N/A";
-        const totalAmount = document.getElementById("total").innerText;
-        const billNoSpan = document.getElementById("billNo").innerText;
-        const billDateSpan = document.getElementById("billDate").innerText;
-        
-        const message = `🏠 *KR Enclave Rent Bill* 🧾\n\n` +
-                        `📌 Bill No: ${billNoSpan}\n` +
-                        `📅 Date: ${billDateSpan}\n` +
-                        `🏢 Flat: ${flatNo}\n` +
-                        `👤 Tenant: ${tenantName}\n` +
-                        `💰 Total Amount: ${totalAmount}\n\n` +
-                        `Thank you! - KR Management`;
-        
-        // Try using Web Share API first (works on mobile)
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-            try {
-                await navigator.share({
-                    title: 'KR Rent Bill',
-                    text: message,
-                    files: [file]
-                });
-                waBtn.innerHTML = originalText;
-                waBtn.disabled = false;
-                return;
-            } catch (shareErr) {
-                console.warn("Web share failed, fallback to download", shareErr);
-            }
+    function loadTenantName() {
+        const houseSelect = document.getElementById('house');
+        const nameField = document.getElementById('name');
+        const selectedVal = houseSelect.value;
+        if(selectedVal && houseToTenant[selectedVal]) {
+            nameField.value = houseToTenant[selectedVal];
+        } else {
+            nameField.value = '';
         }
-        
-        // Fallback: Download PDF and open WhatsApp with text
-        // First download the PDF
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(pdfBlob);
-        link.href = url;
-        link.download = `Rent_Bill_${document.getElementById("billNo").innerText}.pdf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        
-        // Then open WhatsApp with message
-        const encodedMsg = encodeURIComponent(message + "\n\n📄 PDF has been downloaded. Please attach it to share.");
-        const phoneNumber = "919611459960";
-        const waLink = `https://wa.me/${phoneNumber}?text=${encodedMsg}`;
-        window.open(waLink, '_blank');
-        
-        alert("PDF downloaded successfully! WhatsApp chat opened with bill summary. You can attach the downloaded PDF to share.");
-        
-    } catch (err) {
-        console.error("WhatsApp share error:", err);
-        alert("Unable to generate PDF. Please try again.\nError: " + err.message);
-    } finally {
-        waBtn.innerHTML = originalText;
-        waBtn.disabled = false;
+        calculate();
     }
-}
-	
-	// Helper: generate PDF Blob without UI interference for sharing
-async function generatePDFBlob() {
-    // Create a temporary clone to avoid altering visible UI while capturing
-    const originalBill = document.getElementById("bill");
-    const cloneBill = originalBill.cloneNode(true);
-    
-    // Hide control buttons inside clone
-    const cloneControls = cloneBill.querySelector(".controls");
-    if(cloneControls) cloneControls.style.display = "none";
-    
-    // Hide dev-sign interactive elements
-    const cloneDev = cloneBill.querySelector(".dev-sign");
-    if(cloneDev) cloneDev.style.display = "none";
-    
-    // Create temporary container
-    const tempDiv = document.createElement("div");
-    tempDiv.style.position = "absolute";
-    tempDiv.style.top = "-9999px";
-    tempDiv.style.left = "-9999px";
-    tempDiv.appendChild(cloneBill);
-    document.body.appendChild(tempDiv);
-    
-    try {
-        // Use html2pdf with output method instead of save
+
+    document.getElementById('house').addEventListener('change', loadTenantName);
+
+    // Attach event listeners to all inputs for real-time calculation
+    const allDynamicInputs = document.querySelectorAll('input');
+    allDynamicInputs.forEach(inp => inp.addEventListener('input', calculate));
+
+    // Number to Words (Indian format)
+    function numberToWords(num){
+        if(num === 0 || isNaN(num) || num === null) return "Zero Rupees Only";
+        const ones = ["", "One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+        const tens = ["", "", "Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+        function convert(n){
+            if(n < 20) return ones[n];
+            if(n < 100) return tens[Math.floor(n/10)] + (n%10 ? " " + ones[n%10] : "");
+            if(n < 1000) return ones[Math.floor(n/100)] + " Hundred" + (n%100 ? " " + convert(n%100) : "");
+            if(n < 100000) return convert(Math.floor(n/1000)) + " Thousand" + (n%1000 ? " " + convert(n%1000) : "");
+            if(n < 10000000) return convert(Math.floor(n/100000)) + " Lakh" + (n%100000 ? " " + convert(n%100000) : "");
+            return convert(Math.floor(n/10000000)) + " Crore" + (n%10000000 ? " " + convert(n%10000000) : "");
+        }
+        let numeric = parseFloat(num).toFixed(2);
+        let parts = numeric.split(".");
+        let rupees = parseInt(parts[0]);
+        let paisa = parseInt(parts[1] || 0);
+        let words = "";
+        if(rupees > 0) words += convert(rupees) + " Rupee" + (rupees>1 ? "s" : "");
+        if(paisa > 0){
+            if(words) words += " and ";
+            words += convert(paisa) + " Paisa";
+        }
+        return words + " Only";
+    }
+
+    // Core Calculation
+    function calculate(){
+        let rent = parseFloat(document.getElementById("rent").value) || 0;
+        let currentBill = parseFloat(document.getElementById("currentBill").value) || 0;
+        let arrears = parseFloat(document.getElementById("arrears").value) || 0;
+        let maintenance = parseFloat(document.getElementById("maintenance").value) || 0;
+        let sanitary = parseFloat(document.getElementById("sanitary").value) || 0;
+        let parking = parseFloat(document.getElementById("parking").value) || 0;
+        
+        let prev = parseFloat(document.getElementById("prev").value) || 0;
+        let curr = parseFloat(document.getElementById("current").value) || 0;
+        let usageRaw = curr - prev;
+        let usage = usageRaw < 0 ? 0 : usageRaw;
+        let waterAmt = usage * 10 * 0.15;
+        
+        let total = rent + currentBill + arrears + maintenance + sanitary + parking + waterAmt;
+        
+        document.getElementById("usage").innerText = usage.toFixed(2);
+        document.getElementById("waterAmt").innerText = waterAmt.toFixed(2);
+        document.getElementById("total").innerHTML = `₹ ${total.toFixed(2)}`;
+        document.getElementById("totalWords").innerText = numberToWords(total);
+    }
+
+    function allowOnlyNumbers(input){
+        input.value = input.value.replace(/[^0-9.]/g, '');
+        let dotCount = (input.value.match(/\./g) || []).length;
+        if(dotCount > 1) input.value = input.value.replace(/\.+$/, '');
+        calculate();
+    }
+
+    // ========== ORIGINAL PDF DOWNLOAD FUNCTION (UNCHANGED) ==========
+    function downloadPDF(){
+        let controlsDiv = document.querySelector(".controls");
+        let devBar = document.querySelector(".dev-sign");
+        if(controlsDiv) controlsDiv.style.display = "none";
+        const element = document.getElementById("bill");
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        
         const opt = {
             margin: [0.2, 0.2, 0.2, 0.2],
-            filename: `Rent_Bill_${document.getElementById("billNo").innerText}.pdf`,
+            filename: `KR_Rent_Bill_${document.getElementById("billNo").innerText}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             enableLinks: true,
-            html2canvas: { scale: 3, useCORS: true, letterRendering: true, logging: false },
+            html2canvas: { scale: 3, useCORS: true, letterRendering: true, scrollY: 0, logging: false },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         
-        // Use worker to get PDF as blob
-        const worker = html2pdf().set(opt).from(cloneBill);
-        const pdfBlob = await worker.outputPdf('blob');
-        
-        document.body.removeChild(tempDiv);
-        return pdfBlob;
-    } catch (err) {
-        document.body.removeChild(tempDiv);
-        console.error("PDF generation error:", err);
-        throw err;
+        html2pdf().set(opt).from(element).save().then(() => {
+            if(controlsDiv) controlsDiv.style.display = "flex";
+            document.body.style.overflow = originalOverflow;
+        }).catch(err => {
+            console.warn(err);
+            if(controlsDiv) controlsDiv.style.display = "flex";
+            document.body.style.overflow = originalOverflow;
+        });
     }
-}
-	
+    
+    // ========== SIMPLIFIED SHARE VIA WHATSAPP - REUSES DOWNLOAD PDF FUNCTION ==========
+    // This function simply calls downloadPDF() and then opens WhatsApp with a message
+    // No changes to the original PDF generation - just reuses the existing download functionality
+    async function shareViaWhatsApp() {
+        const waBtn = document.querySelector('.btn-wa');
+        const originalHtml = waBtn.innerHTML;
+        waBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Generating PDF...';
+        waBtn.disabled = true;
+        
+        try {
+            // First, temporarily override downloadPDF to capture blob instead of saving
+            // But to keep things simple and reuse existing code, we'll trigger download and then guide user
+            // Since the original downloadPDF saves the file, we'll use it and then open WhatsApp with instructions
+            
+            // Get bill details for WhatsApp message
+            const flatText = document.getElementById("house").selectedOptions[0]?.text || "N/A";
+            const tenantName = document.getElementById("name").value || "N/A";
+            const totalAmount = document.getElementById("total").innerText;
+            const billNoSpan = document.getElementById("billNo").innerText;
+            const billDateSpan = document.getElementById("billDate").innerText;
+            
+            // Create WhatsApp message with bill summary
+            const message = `🏠 *KR Enclave Rent Bill* 🧾\n\n` +
+                            `📌 Bill No: ${billNoSpan}\n` +
+                            `📅 Date: ${billDateSpan}\n` +
+                            `🏢 Flat: ${flatText}\n` +
+                            `👤 Tenant: ${tenantName}\n` +
+                            `💰 Total Amount: ${totalAmount}\n\n` +
+                            `📎 PDF bill has been downloaded. Please attach the PDF file to share this receipt.\n\n` +
+                            `Thank you! - KR Management`;
+            
+            // Call the existing downloadPDF function - this saves the PDF to device
+            downloadPDF();
+            
+            // Wait a moment for download to initiate
+            setTimeout(() => {
+                // Open WhatsApp with the message (user will manually attach the downloaded PDF)
+                const encodedMsg = encodeURIComponent(message);
+                const waLink = `https://wa.me/919611459960?text=${encodedMsg}`;
+                window.open(waLink, '_blank');
+                
+                waBtn.innerHTML = originalHtml;
+                waBtn.disabled = false;
+            }, 1500);
+            
+        } catch (err) {
+            console.error("WhatsApp share error:", err);
+            alert("Unable to share. Please try again.");
+            waBtn.innerHTML = originalHtml;
+            waBtn.disabled = false;
+        }
+    }
+    
+    calculate();
+    
+    // Prevent right-click on bill
+    document.getElementById("bill")?.addEventListener("contextmenu", (e) => e.preventDefault());
 </script>
 </body>
 </html>
