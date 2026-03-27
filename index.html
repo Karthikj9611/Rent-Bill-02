@@ -9,6 +9,31 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 
+/* Center all input values */
+input, input[type="text"], input[type="number"] {
+    text-align: center;
+}
+
+/* Ensure number inputs are centered */
+input[type="number"] {
+    text-align: center;
+}
+
+/* Center inputs within table cells */
+td input {
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+}
+
+input {
+    text-align: center;
+}
+
+input::placeholder {
+    text-align: left; /* Keep placeholder left-aligned if needed */
+}
+
 @media print {
 body {
 background: white;
@@ -794,7 +819,7 @@ async function shareOnWhatsApp() {
             files: [file]
         });
         
-        alert("✅ Bill shared successfully on WhatsApp!");
+<!--        alert("✅ Bill shared successfully on WhatsApp!"); -->
         
     } catch (error) {
         console.error("Share error:", error);
@@ -882,7 +907,7 @@ async function sharePDFOnWhatsApp() {
             files: [file]
         });
         
-        alert("✅ PDF bill shared successfully on WhatsApp!");
+<!--        alert("✅ PDF bill shared successfully on WhatsApp!"); -->
         
     } catch (error) {
         console.error("PDF Share error:", error);
