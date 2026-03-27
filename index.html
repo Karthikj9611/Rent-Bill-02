@@ -781,12 +781,10 @@ async function shareOnWhatsApp() {
         const file = new File([blob], `Rent_Bill_${billNo}.jpg`, { type: 'image/jpeg' });
         
         // Create message text
-        const message = `🏠 *KR ENCLAVE RENT BILL* 🏠\n\n` +
-                       `📄 *Bill No:* ${billNo}\n` +
-                       `🏢 *Flat:* ${flatNo}\n` +
-                       `👤 *Tenant:* ${tenantName}\n` +
-                       `📅 *Date:* ${billDate}\n` +
-                       `💰 *Total Amount:* ₹${totalAmount}\n\n` +
+        const message = `🏢 *Flat :* ${flatNo}\n` +
+                       `👤 *Tenant :* ${tenantName}\n` +
+                       `📅 *Date :* ${billDate}\n` +
+                       `💰 *Total Amount :* ₹${totalAmount}\n\n` +
                        `Thank you,\n KR`;
         
         // Share directly to WhatsApp
