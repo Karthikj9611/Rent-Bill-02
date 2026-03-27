@@ -787,7 +787,7 @@ async function shareOnWhatsApp() {
                        `👤 *Tenant:* ${tenantName}\n` +
                        `📅 *Date:* ${billDate}\n` +
                        `💰 *Total Amount:* ₹${totalAmount}\n\n` +
-                       `Thank you,\nKR Enclave Management`;
+                       `Thank you,\n KR`;
         
         // Share directly to WhatsApp
         await navigator.share({
@@ -942,7 +942,7 @@ async function directShareOnMobile() {
         const file = new File([blob], `Rent_Bill_${billNo}.jpg`, { type: 'image/jpeg' });
         
         // Create message
-        const message = `KR ENCLAVE RENT BILL\nBill No: ${billNo}\nFlat: ${flatNo}\nTenant: ${tenantName}\nTotal: ₹${totalAmount}`;
+        const message = `KR ENCLAVE RENT BILL\nFlat: ${flatNo}\nTenant: ${tenantName}\nTotal: ₹${totalAmount}`;
         
         // Share directly
         await navigator.share({
