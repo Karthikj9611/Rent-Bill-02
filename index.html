@@ -813,7 +813,7 @@ async function shareOnWhatsApp() {
     }
 }
 
-// Share as PDF (Direct WhatsApp Share)
+// Share as PDF (Direct WhatsApp Share) - FIXED
 async function sharePDFOnWhatsApp() {
     const element = document.getElementById("bill");
     const billNo = document.getElementById("billNo").innerText;
@@ -847,14 +847,22 @@ async function sharePDFOnWhatsApp() {
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         
-        // Generate PDF as blob
-        const pdfBlob = await new Promise((resolve) => {
-            html2pdf().set(opt).from(element).outputPdf().then(resolve);
+        // Create a temporary element to generate PDF
+        const worker = html2pdf().set(opt).from(element);
+        
+        // Get PDF as blob using output method
+        const pdfBlob = await new Promise((resolve, reject) => {
+            worker.outputPdf('blob').then(resolve).catch(reject);
         });
         
         // Restore controls
         if(controlsDiv) controlsDiv.style.display = "block";
         if(devSign) devSign.style.display = "flex";
+        
+        // Check if blob is valid
+        if (!pdfBlob || pdfBlob.size === 0) {
+            throw new Error("Generated PDF is empty");
+        }
         
         // Create file from blob
         const file = new File([pdfBlob], `Rent_Bill_${billNo}.pdf`, { type: 'application/pdf' });
@@ -865,13 +873,13 @@ async function sharePDFOnWhatsApp() {
                        `🏢 *Flat:* ${flatNo}\n` +
                        `👤 *Tenant:* ${tenantName}\n` +
                        `📅 *Date:* ${billDate}\n` +
-                       `💰 *Total Amount:* ₹${totalAmount}\n\n` +
+                       `💰 *Total Amount:* ${totalAmount}\n\n` +
                        `PDF bill attached.\n\n` +
                        `Thank you,\nKR Enclave Management`;
         
         // Share directly to WhatsApp
         await navigator.share({
-            title: 'Rent Bill PDF',
+            title: `Rent Bill ${billNo}`,
             text: message,
             files: [file]
         });
