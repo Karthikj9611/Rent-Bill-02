@@ -329,12 +329,13 @@ padding-top: 10px;
 border-top: 2px dashed #cbdbe0;
 }
 .signature {
-    text-align: left;
+text-align: left;
 font-size: 10px;
 width: 45%;
 }
+
 .signature2 {
-    text-align: right;
+text-align: right;
 font-size: 10px;
 width: 45%;
 }
@@ -402,87 +403,87 @@ padding: 12px;
 
 /* Modal Popup - Mobile Optimized */
 .modal-alert {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background: rgba(0,0,0,0.6);
-display: flex;
-align-items: center;
-justify-content: center;
-z-index: 9999;
-font-family: 'Segoe UI', Arial, sans-serif;
-backdrop-filter: blur(3px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    backdrop-filter: blur(3px);
 }
 .modal-content {
-background: white;
-padding: 25px 20px;
-border-radius: 24px;
-width: 85%;
-max-width: 300px;
-text-align: center;
-box-shadow: 0 25px 40px rgba(0,0,0,0.25);
-animation: fadeIn 0.25s ease;
-margin: 20px;
+    background: white;
+    padding: 25px 20px;
+    border-radius: 24px;
+    width: 85%;
+    max-width: 300px;
+    text-align: center;
+    box-shadow: 0 25px 40px rgba(0,0,0,0.25);
+    animation: fadeIn 0.25s ease;
+    margin: 20px;
 }
 .modal-content i {
-font-size: 50px;
-color: #f39c12;
-margin-bottom: 12px;
+    font-size: 50px;
+    color: #f39c12;
+    margin-bottom: 12px;
 }
 .modal-content h4 {
-font-size: 18px;
-margin: 12px 0 8px;
-color: #1f4e8c;
-font-weight: 700;
+    font-size: 18px;
+    margin: 12px 0 8px;
+    color: #1f4e8c;
+    font-weight: 700;
 }
 .modal-content p {
-font-size: 14px;
-margin: 8px 0 20px;
-color: #555;
-line-height: 1.4;
+    font-size: 14px;
+    margin: 8px 0 20px;
+    color: #555;
+    line-height: 1.4;
 }
 .modal-content button {
-background: #1f4e8c;
-padding: 12px 28px;
-font-size: 15px;
-font-weight: 600;
-border-radius: 40px;
-margin-top: 5px;
-width: 100%;
-max-width: 180px;
-border: none;
-cursor: pointer;
+    background: #1f4e8c;
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 40px;
+    margin-top: 5px;
+    width: 100%;
+    max-width: 180px;
+    border: none;
+    cursor: pointer;
 }
 .modal-content button:active {
-transform: scale(0.97);
-background: #0e3a6b;
+    transform: scale(0.97);
+    background: #0e3a6b;
 }
 @keyframes fadeIn {
-from { opacity: 0; transform: scale(0.92); }
-to { opacity: 1; transform: scale(1); }
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 /* Extra small screens */
 @media (max-width: 480px) {
-.modal-content {
-width: 90%;
-padding: 22px 18px;
-}
-.modal-content i {
-font-size: 44px;
-}
-.modal-content h4 {
-font-size: 17px;
-}
-.modal-content p {
-font-size: 13px;
-}
-.modal-content button {
-padding: 10px 24px;
-font-size: 14px;
-}
+    .modal-content {
+        width: 90%;
+        padding: 22px 18px;
+    }
+    .modal-content i {
+        font-size: 44px;
+    }
+    .modal-content h4 {
+        font-size: 17px;
+    }
+    .modal-content p {
+        font-size: 13px;
+    }
+    .modal-content button {
+        padding: 10px 24px;
+        font-size: 14px;
+    }
 }
 </style>
 </head>
@@ -518,7 +519,7 @@ font-size: 14px;
 <div class="info-grid">
 <div class="info-item">
 <span class="label">🏠 Flat No.</span>
-<select id="house" style="flex:1; border:1px solid #ccd7e8; padding:6px 8px; border-radius:12px; font-size:10px; background:white; text-align:center; text-align-last:center;">
+<select id="house" style="flex:1; border:1px solid #ccd7e8; padding:6px 8px; border-radius:12px; font-size:10px; background:white;text-align:center">
 <option value="">-- Select Flat No. --</option>
 <option value="A-101">A-101</option>
 <option value="A-102">A-102</option>
@@ -531,7 +532,7 @@ font-size: 14px;
 <option value="C-303">C-303</option>
 </select>
 </div>
-<div class="info-item"><span class="label">🏢 Tenant Name</span><input type="text" id="name" placeholder="-- Auto-loads from Flat No. selection --"></div>
+<div class="info-item"><span class="label">🏢 Tenant Name</span><input type="text" id="name" placeholder="-- Auto loads from Flat No. selection --"></div>
 </div>
 
 <!-- WATER BILL SECTION (Full Width) -->
@@ -651,14 +652,14 @@ font-size: 14px;
 <!-- FOOTER SIGNATURE -->
 <div class="footer">
 <div class="signature">
-<div style="font-size:9px;">____________________</div>
-<div>Tenant Signature</div>
-<!--<div style="font-size:8px; color:#666;">(Acknowledgment of receipt)</div> -->
+<div style="font-size:9px;">___________________</div>
+<div>Resident / Tenant Signature</div>
+<div style="font-size:8px; color:#666;">(Acknowledgment of receipt)</div>
 </div>
-        <div class="signature2">
+<div class="signature2">
 <div style="font-weight:bold;">Karthik J</div>
 <div style="font-size:9px;">Authorized Signatory</div>
-<!--<div style="font-size:8px;">KR Enclave Management</div>-->
+<div style="font-size:8px;">KR Enclave Management</div>
 </div>
 </div>
 
@@ -771,35 +772,35 @@ calculate();
 }
 
 function showModal(message) {
-// Remove any existing modal first
-const existingModal = document.querySelector('.modal-alert');
-if (existingModal) existingModal.remove();
-
-const modal = document.createElement('div');
-modal.className = 'modal-alert';
-modal.innerHTML = `
-       <div class="modal-content">
-           <i class="fas fa-exclamation-triangle"></i>
-           <h4>⚠️ Missing Info</h4>
-           <p>${message}</p>
-           <button>OK</button>
-       </div>
-   `;
-document.body.appendChild(modal);
-
-// Close on button click
-const closeBtn = modal.querySelector('button');
-closeBtn.addEventListener('click', () => modal.remove());
-
-// Close on background click (touch friendly)
-modal.addEventListener('click', (e) => {
-if (e.target === modal) modal.remove();
-});
-
-// Auto-close after 3 seconds on mobile (optional)
-setTimeout(() => {
-if (document.body.contains(modal)) modal.remove();
-}, 4000);
+    // Remove any existing modal first
+    const existingModal = document.querySelector('.modal-alert');
+    if (existingModal) existingModal.remove();
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal-alert';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h4>⚠️ Missing Info</h4>
+            <p>${message}</p>
+            <button>OK</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // Close on button click
+    const closeBtn = modal.querySelector('button');
+    closeBtn.addEventListener('click', () => modal.remove());
+    
+    // Close on background click (touch friendly)
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
+    
+    // Auto-close after 3 seconds on mobile (optional)
+    setTimeout(() => {
+        if (document.body.contains(modal)) modal.remove();
+    }, 4000);
 }
 
 // PDF generation
@@ -1130,31 +1131,32 @@ calculate();
 });
 
 function validateBillFields() {
-const flatNo = document.getElementById("house").value;
-const tenantName = document.getElementById("name").value;
-const rent = parseFloat(document.getElementById("rent").value) || 0;
-const prevReading = parseFloat(document.getElementById("prev").value);
-const currentReading = parseFloat(document.getElementById("current").value);
-
-if (!flatNo) {
-showModal("Please select Flat No. before downloading.");
-return false;
+    const flatNo = document.getElementById("house").value;
+    const tenantName = document.getElementById("name").value;
+    const rent = parseFloat(document.getElementById("rent").value) || 0;
+    const prevReading = parseFloat(document.getElementById("prev").value);
+    const currentReading = parseFloat(document.getElementById("current").value);
+    
+    if (!flatNo) {
+        showModal("Please select Flat No. before downloading.");
+        return false;
+    }
+    
+    if (!tenantName) {
+        showModal("Please enter Tenant Name before downloading.");
+        return false;
+    }
+    
+    if (rent <= 0) {
+        showModal("Please enter Rent Amount before downloading.");
+        return false;
+    }
+    
+    if (isNaN(prevReading) || isNaN(currentReading)) {
+        showModal("Please enter both Previous and Current Water Readings before downloading.");
+        return false;
+    }
+    
+    return true;
 }
-
-if (!tenantName) {
-showModal("Please enter Tenant Name before downloading.");
-return false;
-}
-
-if (rent <= 0) {
-showModal("Please enter Rent Amount before downloading.");
-return false;
-}
-
-if (isNaN(prevReading) || isNaN(currentReading)) {
-showModal("Please enter both Previous and Current Water Readings before downloading.");
-return false;
-}
-
-return true;
-}
+</script>
