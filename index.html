@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- Replace with: -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>KR Rent Bill</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -12,27 +11,27 @@
 
 /* Center all input values */
 input, input[type="text"], input[type="number"] {
-    text-align: center;
+text-align: center;
 }
 
 /* Ensure number inputs are centered */
 input[type="number"] {
-    text-align: center;
+text-align: center;
 }
 
 /* Center inputs within table cells */
 td input {
-    text-align: center;
-    display: block;
-    margin: 0 auto;
+text-align: center;
+display: block;
+margin: 0 auto;
 }
 
 input {
-    text-align: center;
+text-align: center;
 }
 
 input::placeholder {
-    text-align: left; /* Keep placeholder left-aligned if needed */
+text-align: left; /* Keep placeholder left-aligned if needed */
 }
 
 @media print {
@@ -148,12 +147,12 @@ transition: 0.2s;
 
 /*
 #billNoDiv {
-   background: rgba(255,255,255,0.15);
-   padding: 8px 14px;
-   border-radius: 20px;
-   text-align: right;
-   font-weight: 600;
-   font-size: 11px;
+  background: rgba(255,255,255,0.15);
+  padding: 8px 14px;
+  border-radius: 20px;
+  text-align: right;
+  font-weight: 600;
+  font-size: 11px;
 }
 */
 #billNoDiv div {
@@ -330,17 +329,10 @@ padding-top: 10px;
 border-top: 2px dashed #cbdbe0;
 }
 .signature {
-    text-align: left;
+    text-align: center;
 font-size: 10px;
 width: 45%;
 }
-
-.signature2 {
-    text-align: right;
-font-size: 10px;
-width: 45%;
-}
-
 .dev-sign {
 background: #f4f7fc;
 border-radius: 40px;
@@ -401,269 +393,15 @@ margin: 0;
 padding: 12px;
 }
 }
-
-
-/* Mobile Responsive Styles - Add this at the end */
-@media screen and (max-width: 768px) {
-    body {
-        padding: 8px 6px;
-        background: #e2e8f0;
-        min-height: 100vh;
-    }
-    
-    #bill {
-        width: 100%;
-        max-width: 100%;
-        padding: 12px 12px;
-        margin: 0;
-        border-radius: 8px;
-        box-sizing: border-box;
-    }
-    
-    /* Header */
-    .header {
-        flex-direction: column;
-        text-align: center;
-        padding: 12px 15px;
-        gap: 10px;
-    }
-    
-    .address {
-        text-align: center;
-    }
-    
-    .phone-buttons {
-        justify-content: center;
-    }
-    
-    #billNoDiv {
-        text-align: center;
-        margin-top: 0;
-    }
-    
-    /* Customer Info - Stack vertically */
-    .info-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 12px;
-    }
-    
-    .info-item {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 5px;
-    }
-    
-    .info-item .label {
-        min-width: auto;
-        text-align: center;
-        display: inline-block;
-        width: fit-content;
-        margin: 0 auto;
-    }
-    
-    .info-item input,
-    .info-item select {
-        width: 100%;
-        padding: 8px 10px;
-        font-size: 12px;
-    }
-    
-    /* Two column layout becomes single column */
-    .bill-two-columns {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .bill-left, .bill-right {
-        width: 100%;
-    }
-    
-    /* Tables */
-    table {
-        width: 100%;
-        display: table;
-    }
-    
-    th, td {
-        padding: 8px 6px;
-        font-size: 11px;
-        word-break: break-word;
-    }
-    
-    .label-cell {
-        width: 50%;
-    }
-    
-    /* Water section */
-    .water-table th, 
-    .water-table td {
-        font-size: 10px;
-        padding: 6px 4px;
-    }
-    
-    .water-table input {
-        width: 100%;
-        min-width: 70px;
-        font-size: 11px;
-        text-align: center;
-    }
-    
-    /* Total section */
-    .total-table td {
-        padding: 10px 12px;
-    }
-    
-    .total-highlight {
-        font-size: 18px !important;
-        text-align: center !important;
-    }
-    
-    /* Amount in words */
-    #totalWords {
-        font-size: 10px;
-        display: block;
-        margin-top: 5px;
-    }
-    
-    /* Notes */
-    .notes {
-        padding: 10px 12px;
-    }
-    
-    .notes ul {
-        padding-left: 18px;
-    }
-    
-    .notes li {
-        font-size: 9px;
-    }
-    
-    /* Footer */
-    .footer {
-        flex-direction: column;
-        text-align: center;
-        gap: 12px;
-        margin-top: 15px;
-    }
-    
-    .signature, .signature2 {
-        width: 100%;
-        text-align: center;
-    }
-    
-    .signature2 {
-        text-align: center;
-    }
-    
-    /* Developer signature */
-    .dev-sign {
-        flex-wrap: wrap;
-        gap: 8px;
-        padding: 8px 5px;
-    }
-    
-    .dev-sign a {
-        padding: 4px 10px;
-        font-size: 8px;
-    }
-    
-    /* Buttons */
-    .controls {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 8px;
-        margin: 15px auto 5px;
-    }
-    
-    .controls button {
-        padding: 8px 14px;
-        font-size: 11px;
-        margin: 0;
-        flex: 1;
-        min-width: 100px;
-    }
-    
-    /* Inputs in tables */
-    td input {
-        width: 100%;
-        font-size: 11px;
-        padding: 5px 0;
-    }
-    
-    /* Water amount display */
-    #usage, #waterAmt {
-        font-size: 11px;
-        font-weight: 600;
-    }
-    
-    /* Section titles */
-    .section-title {
-        font-size: 11px;
-        padding: 5px 10px;
-    }
-}
-
-
-/* For very small screens (below 480px) */
-@media screen and (max-width: 480px) {
-    #bill {
-        padding: 8px 8px;
-    }
-    
-    th, td {
-        padding: 6px 4px;
-        font-size: 9px;
-    }
-    
-    .label-cell {
-        font-size: 9px;
-    }
-    
-    input, select {
-        font-size: 10px !important;
-    }
-    
-    .controls button {
-        padding: 6px 10px;
-        font-size: 10px;
-        min-width: 85px;
-    }
-    
-    .total-highlight {
-        font-size: 16px !important;
-    }
-    
-    .water-table input {
-        min-width: 55px;
-        font-size: 10px;
-    }
-}
-
-/* Update #bill style */
-#bill {
-    width: 100%;
-    max-width: 100%;
-    min-height: auto;
-    margin: 0;
-    padding: 18px 22px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-    position: relative;
-    border: 1px solid #e0e7f0;
-    box-sizing: border-box;
-}
 </style>
 </head>
 <body>
 
 <div id="bill">
 <!--
-   <div class="watermark">
-       <span class="black">SS</span><span class="red">R</span>
-   </div>
+  <div class="watermark">
+      <span class="black">SS</span><span class="red">R</span>
+  </div>
 	
 -->
 
@@ -826,7 +564,7 @@ padding: 12px;
 <div>Resident / Tenant Signature</div>
 <div style="font-size:8px; color:#666;">(Acknowledgment of receipt)</div>
 </div>
-        <div class="signature2">
+        <div class="signature">
 <div style="font-weight:bold;">Karthik J</div>
 <div style="font-size:9px;">Authorized Signatory</div>
 <div style="font-size:8px;">KR Enclave Management</div>
@@ -841,15 +579,15 @@ padding: 12px;
 <a href="https://wa.me/919611459960" target="_blank"><i class="fab fa-whatsapp"></i> </a>
 </div>
 <div class="controls">
-    <button onclick="downloadPDF()" style="margin-right: 12px; background: #1f4e8c;">
-        <i class="fas fa-download"></i> Download PDF
-    </button>
-    <button onclick="shareOnWhatsApp()" style="margin-right: 12px; background: #25D366;">
-        <i class="fab fa-whatsapp"></i> Share as Image
-    </button>
-    <button onclick="sharePDFOnWhatsApp()" style="background: #128C7E;">
-        <i class="fas fa-file-pdf"></i> Share as PDF
-    </button>
+<button onclick="downloadPDF()" style="margin-right: 12px; background: #1f4e8c;">
+<i class="fas fa-download"></i> Download PDF
+</button>
+<button onclick="shareOnWhatsApp()" style="margin-right: 12px; background: #25D366;">
+<i class="fab fa-whatsapp"></i> Share as Image
+</button>
+<button onclick="sharePDFOnWhatsApp()" style="background: #128C7E;">
+<i class="fas fa-file-pdf"></i> Share as PDF
+</button>
 </div>
 </div>
 
@@ -1027,241 +765,240 @@ document.getElementById('house').addEventListener('change', loadBuildingName);
 
 // Share as Image (Direct WhatsApp Share)
 async function shareOnWhatsApp() {
-    const element = document.getElementById("bill");
-    const billNo = document.getElementById("billNo").innerText;
-    const totalAmount = document.getElementById("total").innerText;
-    const tenantName = document.getElementById("name").value || "Tenant";
-    const flatNo = document.getElementById("house").value || "Flat";
-    const billDate = document.getElementById("billDate").innerText;
-    
-    if (!navigator.share) {
-        alert("⚠️ Direct share not supported. Please use Download PDF button.");
-        return;
-    }
-    
-    const shareBtn = event.target.closest('button');
-    const originalText = shareBtn.innerHTML;
-    shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Capturing Image...';
-    shareBtn.disabled = true;
-    
-    try {
-        // Hide controls for clean capture
-        const controlsDiv = document.querySelector(".controls");
-        const devSign = document.querySelector(".dev-sign");
-        if(controlsDiv) controlsDiv.style.display = "none";
-        if(devSign) devSign.style.display = "none";
-        
-        // Capture bill as high quality image
-        const canvas = await html2canvas(element, {
-            scale: 2.5,
-            backgroundColor: '#ffffff',
-            logging: false,
-            useCORS: true
-        });
-        
-        // Restore controls
-        if(controlsDiv) controlsDiv.style.display = "block";
-        if(devSign) devSign.style.display = "flex";
-        
-        // Convert to blob for sharing
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
-        const file = new File([blob], `Rent_Bill_${billNo}.jpg`, { type: 'image/jpeg' });
-        
-        // Create message text
-        const message = `🏢 *Flat :* ${flatNo}\n` +
-                       `👤 *Tenant :* ${tenantName}\n` +
-                       `📅 *Date :* ${billDate}\n` +
-                       `💰 *Total Amount :* ₹${totalAmount}\n\n` +
-                       `Thank you,\n KR`;
-        
-        // Share directly to WhatsApp
-        await navigator.share({
-            title: 'Rent Bill',
-            text: message,
-            files: [file]
-        });
-        
+const element = document.getElementById("bill");
+const billNo = document.getElementById("billNo").innerText;
+const totalAmount = document.getElementById("total").innerText;
+const tenantName = document.getElementById("name").value || "Tenant";
+const flatNo = document.getElementById("house").value || "Flat";
+const billDate = document.getElementById("billDate").innerText;
+
+if (!navigator.share) {
+alert("⚠️ Direct share not supported. Please use Download PDF button.");
+return;
+}
+
+const shareBtn = event.target.closest('button');
+const originalText = shareBtn.innerHTML;
+shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Capturing Image...';
+shareBtn.disabled = true;
+
+try {
+// Hide controls for clean capture
+const controlsDiv = document.querySelector(".controls");
+const devSign = document.querySelector(".dev-sign");
+if(controlsDiv) controlsDiv.style.display = "none";
+if(devSign) devSign.style.display = "none";
+
+// Capture bill as high quality image
+const canvas = await html2canvas(element, {
+scale: 2.5,
+backgroundColor: '#ffffff',
+logging: false,
+useCORS: true
+});
+
+// Restore controls
+if(controlsDiv) controlsDiv.style.display = "block";
+if(devSign) devSign.style.display = "flex";
+
+// Convert to blob for sharing
+const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+const file = new File([blob], `Rent_Bill_${billNo}.jpg`, { type: 'image/jpeg' });
+
+// Create message text
+const message = `🏢 *Flat :* ${flatNo}\n` +
+`👤 *Tenant :* ${tenantName}\n` +
+`📅 *Date :* ${billDate}\n` +
+`💰 *Total Amount :* ₹${totalAmount}\n\n` +
+`Thank you,\n KR`;
+
+// Share directly to WhatsApp
+await navigator.share({
+title: 'Rent Bill',
+text: message,
+files: [file]
+});
+
 <!--        alert("✅ Bill shared successfully on WhatsApp!"); -->
-        
-    } catch (error) {
-        console.error("Share error:", error);
-        if (error.name !== 'AbortError') {
-            alert("❌ Error: " + error.message + "\n\nTry using Download PDF button instead.");
-        }
-        const controlsDiv = document.querySelector(".controls");
-        const devSign = document.querySelector(".dev-sign");
-        if(controlsDiv) controlsDiv.style.display = "block";
-        if(devSign) devSign.style.display = "flex";
-    } finally {
-        shareBtn.innerHTML = originalText;
-        shareBtn.disabled = false;
-    }
+
+} catch (error) {
+console.error("Share error:", error);
+if (error.name !== 'AbortError') {
+alert("❌ Error: " + error.message + "\n\nTry using Download PDF button instead.");
+}
+const controlsDiv = document.querySelector(".controls");
+const devSign = document.querySelector(".dev-sign");
+if(controlsDiv) controlsDiv.style.display = "block";
+if(devSign) devSign.style.display = "flex";
+} finally {
+shareBtn.innerHTML = originalText;
+shareBtn.disabled = false;
+}
 }
 
 // Share as PDF (Direct WhatsApp Share) - FIXED
 async function sharePDFOnWhatsApp() {
-    const element = document.getElementById("bill");
-    const billNo = document.getElementById("billNo").innerText;
-    const totalAmount = document.getElementById("total").innerText;
-    const tenantName = document.getElementById("name").value || "Tenant";
-    const flatNo = document.getElementById("house").value || "Flat";
-    const billDate = document.getElementById("billDate").innerText;
-    
-    if (!navigator.share) {
-        alert("⚠️ Direct share not supported. Please use Download PDF button.");
-        return;
-    }
-    
-    const shareBtn = event.target.closest('button');
-    const originalText = shareBtn.innerHTML;
-    shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Generating PDF...';
-    shareBtn.disabled = true;
-    
-    try {
-        // Hide controls for clean PDF
-        const controlsDiv = document.querySelector(".controls");
-        const devSign = document.querySelector(".dev-sign");
-        if(controlsDiv) controlsDiv.style.display = "none";
-        if(devSign) devSign.style.display = "none";
-        
-        // PDF configuration
-        const opt = {
-            margin: [0.2, 0.2, 0.2, 0.2],
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 3, useCORS: true, logging: false },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        
-        // Create a temporary element to generate PDF
-        const worker = html2pdf().set(opt).from(element);
-        
-        // Get PDF as blob using output method
-        const pdfBlob = await new Promise((resolve, reject) => {
-            worker.outputPdf('blob').then(resolve).catch(reject);
-        });
-        
-        // Restore controls
-        if(controlsDiv) controlsDiv.style.display = "block";
-        if(devSign) devSign.style.display = "flex";
-        
-        // Check if blob is valid
-        if (!pdfBlob || pdfBlob.size === 0) {
-            throw new Error("Generated PDF is empty");
-        }
-        
-        // Create file from blob
-        const file = new File([pdfBlob], `Rent_Bill_${billNo}.pdf`, { type: 'application/pdf' });
-        
-        // Create message text
-        const message = `🏠 *KR ENCLAVE RENT BILL* 🏠\n\n` +
-                       `📄 *Bill No:* ${billNo}\n` +
-                       `🏢 *Flat:* ${flatNo}\n` +
-                       `👤 *Tenant:* ${tenantName}\n` +
-                       `📅 *Date:* ${billDate}\n` +
-                       `💰 *Total Amount:* ${totalAmount}\n\n` +
-                       `PDF bill attached.\n\n` +
-                       `Thank you,\nKR Enclave Management`;
-        
-        // Share directly to WhatsApp
-        await navigator.share({
-            title: `Rent Bill ${billNo}`,
-            text: message,
-            files: [file]
-        });
-        
+const element = document.getElementById("bill");
+const billNo = document.getElementById("billNo").innerText;
+const totalAmount = document.getElementById("total").innerText;
+const tenantName = document.getElementById("name").value || "Tenant";
+const flatNo = document.getElementById("house").value || "Flat";
+const billDate = document.getElementById("billDate").innerText;
+
+if (!navigator.share) {
+alert("⚠️ Direct share not supported. Please use Download PDF button.");
+return;
+}
+
+const shareBtn = event.target.closest('button');
+const originalText = shareBtn.innerHTML;
+shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Generating PDF...';
+shareBtn.disabled = true;
+
+try {
+// Hide controls for clean PDF
+const controlsDiv = document.querySelector(".controls");
+const devSign = document.querySelector(".dev-sign");
+if(controlsDiv) controlsDiv.style.display = "none";
+if(devSign) devSign.style.display = "none";
+
+// PDF configuration
+const opt = {
+margin: [0.2, 0.2, 0.2, 0.2],
+image: { type: 'jpeg', quality: 0.98 },
+html2canvas: { scale: 3, useCORS: true, logging: false },
+jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+};
+
+// Create a temporary element to generate PDF
+const worker = html2pdf().set(opt).from(element);
+
+// Get PDF as blob using output method
+const pdfBlob = await new Promise((resolve, reject) => {
+worker.outputPdf('blob').then(resolve).catch(reject);
+});
+
+// Restore controls
+if(controlsDiv) controlsDiv.style.display = "block";
+if(devSign) devSign.style.display = "flex";
+
+// Check if blob is valid
+if (!pdfBlob || pdfBlob.size === 0) {
+throw new Error("Generated PDF is empty");
+}
+
+// Create file from blob
+const file = new File([pdfBlob], `Rent_Bill_${billNo}.pdf`, { type: 'application/pdf' });
+
+// Create message text
+const message = `🏠 *KR ENCLAVE RENT BILL* 🏠\n\n` +
+`📄 *Bill No:* ${billNo}\n` +
+`🏢 *Flat:* ${flatNo}\n` +
+`👤 *Tenant:* ${tenantName}\n` +
+`📅 *Date:* ${billDate}\n` +
+`💰 *Total Amount:* ${totalAmount}\n\n` +
+`PDF bill attached.\n\n` +
+`Thank you,\nKR Enclave Management`;
+
+// Share directly to WhatsApp
+await navigator.share({
+title: `Rent Bill ${billNo}`,
+text: message,
+files: [file]
+});
+
 <!--        alert("✅ PDF bill shared successfully on WhatsApp!"); -->
-        
-    } catch (error) {
-        console.error("PDF Share error:", error);
-        if (error.name !== 'AbortError') {
-            alert("❌ Error: " + error.message + "\n\nTry using Share as Image instead.");
-        }
-        const controlsDiv = document.querySelector(".controls");
-        const devSign = document.querySelector(".dev-sign");
-        if(controlsDiv) controlsDiv.style.display = "block";
-        if(devSign) devSign.style.display = "flex";
-    } finally {
-        shareBtn.innerHTML = originalText;
-        shareBtn.disabled = false;
-    }
+
+} catch (error) {
+console.error("PDF Share error:", error);
+if (error.name !== 'AbortError') {
+alert("❌ Error: " + error.message + "\n\nTry using Share as Image instead.");
+}
+const controlsDiv = document.querySelector(".controls");
+const devSign = document.querySelector(".dev-sign");
+if(controlsDiv) controlsDiv.style.display = "block";
+if(devSign) devSign.style.display = "flex";
+} finally {
+shareBtn.innerHTML = originalText;
+shareBtn.disabled = false;
+}
 }
 
 // Direct Share (Already Working)
 async function directShareOnMobile() {
-    const element = document.getElementById("bill");
-    const billNo = document.getElementById("billNo").innerText;
-    const totalAmount = document.getElementById("total").innerText;
-    const tenantName = document.getElementById("name").value || "Tenant";
-    const flatNo = document.getElementById("house").value || "Flat";
-    
-    if (!navigator.share) {
-        alert("⚠️ Direct share not supported. Use Download PDF button.");
-        return;
-    }
-    
-    const shareBtn = event.target.closest('button');
-    const originalText = shareBtn.innerHTML;
-    shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Preparing...';
-    shareBtn.disabled = true;
-    
-    try {
-        // Hide controls
-        const controlsDiv = document.querySelector(".controls");
-        const devSign = document.querySelector(".dev-sign");
-        if(controlsDiv) controlsDiv.style.display = "none";
-        if(devSign) devSign.style.display = "none";
-        
-        // Capture as image
-        const canvas = await html2canvas(element, {
-            scale: 2.5,
-            backgroundColor: '#ffffff',
-            logging: false
-        });
-        
-        // Restore controls
-        if(controlsDiv) controlsDiv.style.display = "block";
-        if(devSign) devSign.style.display = "flex";
-        
-        // Convert to blob
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
-        const file = new File([blob], `Rent_Bill_${billNo}.jpg`, { type: 'image/jpeg' });
-        
-        // Create message
-        const message = `KR ENCLAVE RENT BILL\nFlat: ${flatNo}\nTenant: ${tenantName}\nTotal: ₹${totalAmount}`;
-        
-        // Share directly
-        await navigator.share({
-            title: 'Rent Bill',
-            text: message,
-            files: [file]
-        });
-        
-        alert("✅ Bill shared successfully!");
-        
-    } catch (error) {
-        if (error.name !== 'AbortError') {
-            alert("❌ Error: " + error.message);
-        }
-        const controlsDiv = document.querySelector(".controls");
-        const devSign = document.querySelector(".dev-sign");
-        if(controlsDiv) controlsDiv.style.display = "block";
-        if(devSign) devSign.style.display = "flex";
-    } finally {
-        shareBtn.innerHTML = originalText;
-        shareBtn.disabled = false;
-    }
+const element = document.getElementById("bill");
+const billNo = document.getElementById("billNo").innerText;
+const totalAmount = document.getElementById("total").innerText;
+const tenantName = document.getElementById("name").value || "Tenant";
+const flatNo = document.getElementById("house").value || "Flat";
+
+if (!navigator.share) {
+alert("⚠️ Direct share not supported. Use Download PDF button.");
+return;
+}
+
+const shareBtn = event.target.closest('button');
+const originalText = shareBtn.innerHTML;
+shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Preparing...';
+shareBtn.disabled = true;
+
+try {
+// Hide controls
+const controlsDiv = document.querySelector(".controls");
+const devSign = document.querySelector(".dev-sign");
+if(controlsDiv) controlsDiv.style.display = "none";
+if(devSign) devSign.style.display = "none";
+
+// Capture as image
+const canvas = await html2canvas(element, {
+scale: 2.5,
+backgroundColor: '#ffffff',
+logging: false
+});
+
+// Restore controls
+if(controlsDiv) controlsDiv.style.display = "block";
+if(devSign) devSign.style.display = "flex";
+
+// Convert to blob
+const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+const file = new File([blob], `Rent_Bill_${billNo}.jpg`, { type: 'image/jpeg' });
+
+// Create message
+const message = `KR ENCLAVE RENT BILL\nFlat: ${flatNo}\nTenant: ${tenantName}\nTotal: ₹${totalAmount}`;
+
+// Share directly
+await navigator.share({
+title: 'Rent Bill',
+text: message,
+files: [file]
+});
+
+alert("✅ Bill shared successfully!");
+
+} catch (error) {
+if (error.name !== 'AbortError') {
+alert("❌ Error: " + error.message);
+}
+const controlsDiv = document.querySelector(".controls");
+const devSign = document.querySelector(".dev-sign");
+if(controlsDiv) controlsDiv.style.display = "block";
+if(devSign) devSign.style.display = "flex";
+} finally {
+shareBtn.innerHTML = originalText;
+shareBtn.disabled = false;
+}
 }
 
 // Ensure all inputs trigger calculation
 document.querySelectorAll('input, select').forEach(el => {
-    el.addEventListener('input', calculate);
-    el.addEventListener('change', calculate);
+el.addEventListener('input', calculate);
+el.addEventListener('change', calculate);
 });
 
 // Also trigger calculation when house selection changes for tenant name
 document.getElementById('house').addEventListener('change', function() {
-    loadBuildingName();
-    calculate();
+loadBuildingName();
+calculate();
 });
 </script>
-</body>
