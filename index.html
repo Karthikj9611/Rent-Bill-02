@@ -554,10 +554,15 @@ padding: 12px;
 <a href="https://wa.me/919611459960" target="_blank"><i class="fab fa-whatsapp"></i> </a>
 </div>
 <div class="controls">
-    <button onclick="downloadPDF()" style="margin-right: 12px;"><i class="fas fa-download"></i> Download PDF</button>
-    <button onclick="shareOnWhatsApp()" style="background: #25D366; margin-right: 12px;"><i class="fab fa-whatsapp"></i> Share as Image</button>
-    <button onclick="sharePDFOnWhatsApp()" style="background: #128C7E;"><i class="fas fa-file-pdf"></i> Share as PDF</button>
-	<button onclick="directShareOnMobile()" style="background: #1f4e8c;"><i class="fas fa-share-alt"></i> Direct Share</button>
+    <button onclick="downloadPDF()" style="margin-right: 12px; background: #1f4e8c;">
+        <i class="fas fa-download"></i> Download PDF
+    </button>
+    <button onclick="shareOnWhatsApp()" style="margin-right: 12px; background: #25D366;">
+        <i class="fab fa-whatsapp"></i> Share as Image
+    </button>
+    <button onclick="sharePDFOnWhatsApp()" style="background: #128C7E;">
+        <i class="fas fa-file-pdf"></i> Share as PDF
+    </button>
 </div>
 </div>
 
@@ -733,7 +738,7 @@ buildingInput.value = '';
 document.getElementById('house').addEventListener('change', loadBuildingName);
 
 
-// Function 1: Share as Image (Directly in WhatsApp chat)
+// Share as Image (Direct WhatsApp Share)
 async function shareOnWhatsApp() {
     const element = document.getElementById("bill");
     const billNo = document.getElementById("billNo").innerText;
@@ -742,9 +747,14 @@ async function shareOnWhatsApp() {
     const flatNo = document.getElementById("house").value || "Flat";
     const billDate = document.getElementById("billDate").innerText;
     
+    if (!navigator.share) {
+        alert("⚠️ Direct share not supported. Please use Download PDF button.");
+        return;
+    }
+    
     const shareBtn = event.target.closest('button');
     const originalText = shareBtn.innerHTML;
-    shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Preparing Image...';
+    shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Capturing Image...';
     shareBtn.disabled = true;
     
     try {
@@ -754,9 +764,9 @@ async function shareOnWhatsApp() {
         if(controlsDiv) controlsDiv.style.display = "none";
         if(devSign) devSign.style.display = "none";
         
-        // Capture bill as image with high quality
+        // Capture bill as high quality image
         const canvas = await html2canvas(element, {
-            scale: 2.8,
+            scale: 2.5,
             backgroundColor: '#ffffff',
             logging: false,
             useCORS: true
@@ -766,31 +776,33 @@ async function shareOnWhatsApp() {
         if(controlsDiv) controlsDiv.style.display = "block";
         if(devSign) devSign.style.display = "flex";
         
-        // Convert to data URL (JPEG)
-        const imageDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+        // Convert to blob for sharing
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+        const file = new File([blob], `Rent_Bill_${billNo}.jpg`, { type: 'image/jpeg' });
         
-        // Create message with image data - This works on WhatsApp Web!
+        // Create message text
         const message = `🏠 *KR ENCLAVE RENT BILL* 🏠\n\n` +
                        `📄 *Bill No:* ${billNo}\n` +
                        `🏢 *Flat:* ${flatNo}\n` +
                        `👤 *Tenant:* ${tenantName}\n` +
                        `📅 *Date:* ${billDate}\n` +
-                       `💰 *Total Amount:* ${totalAmount}\n\n` +
-                       `*Bill Image:* ${imageDataUrl}\n\n` +
+                       `💰 *Total Amount:* ₹${totalAmount}\n\n` +
                        `Thank you,\nKR Enclave Management`;
         
-        const encodedMessage = encodeURIComponent(message);
+        // Share directly to WhatsApp
+        await navigator.share({
+            title: 'Rent Bill',
+            text: message,
+            files: [file]
+        });
         
-        // Open WhatsApp with image embedded
-        window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
-        
-        setTimeout(() => {
-            alert("✅ WhatsApp opened with bill!\n\nIf image doesn't appear, click send and the image will be visible in chat.");
-        }, 1000);
+        alert("✅ Bill shared successfully on WhatsApp!");
         
     } catch (error) {
         console.error("Share error:", error);
-        alert("❌ Error: " + error.message + "\n\nTry downloading PDF and sharing manually.");
+        if (error.name !== 'AbortError') {
+            alert("❌ Error: " + error.message + "\n\nTry using Download PDF button instead.");
+        }
         const controlsDiv = document.querySelector(".controls");
         const devSign = document.querySelector(".dev-sign");
         if(controlsDiv) controlsDiv.style.display = "block";
@@ -801,7 +813,7 @@ async function shareOnWhatsApp() {
     }
 }
 
-// Function 2: Share as PDF with Preview Image
+// Share as PDF (Direct WhatsApp Share)
 async function sharePDFOnWhatsApp() {
     const element = document.getElementById("bill");
     const billNo = document.getElementById("billNo").innerText;
@@ -810,64 +822,67 @@ async function sharePDFOnWhatsApp() {
     const flatNo = document.getElementById("house").value || "Flat";
     const billDate = document.getElementById("billDate").innerText;
     
+    if (!navigator.share) {
+        alert("⚠️ Direct share not supported. Please use Download PDF button.");
+        return;
+    }
+    
     const shareBtn = event.target.closest('button');
     const originalText = shareBtn.innerHTML;
-    shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Preparing PDF...';
+    shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Generating PDF...';
     shareBtn.disabled = true;
     
     try {
-        // Hide controls for clean capture
+        // Hide controls for clean PDF
         const controlsDiv = document.querySelector(".controls");
         const devSign = document.querySelector(".dev-sign");
         if(controlsDiv) controlsDiv.style.display = "none";
         if(devSign) devSign.style.display = "none";
         
-        // First, capture image preview
-        const canvas = await html2canvas(element, {
-            scale: 1.5,
-            backgroundColor: '#ffffff',
-            logging: false
-        });
-        const previewImageUrl = canvas.toDataURL('image/jpeg', 0.85);
-        
-        // Generate PDF and download
+        // PDF configuration
         const opt = {
             margin: [0.2, 0.2, 0.2, 0.2],
-            filename: `KR_Rent_Bill_${billNo}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 3, useCORS: true, logging: false },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         
-        await html2pdf().set(opt).from(element).save();
+        // Generate PDF as blob
+        const pdfBlob = await new Promise((resolve) => {
+            html2pdf().set(opt).from(element).outputPdf().then(resolve);
+        });
         
         // Restore controls
         if(controlsDiv) controlsDiv.style.display = "block";
         if(devSign) devSign.style.display = "flex";
         
-        // Create message with preview and PDF download link
+        // Create file from blob
+        const file = new File([pdfBlob], `Rent_Bill_${billNo}.pdf`, { type: 'application/pdf' });
+        
+        // Create message text
         const message = `🏠 *KR ENCLAVE RENT BILL* 🏠\n\n` +
                        `📄 *Bill No:* ${billNo}\n` +
                        `🏢 *Flat:* ${flatNo}\n` +
                        `👤 *Tenant:* ${tenantName}\n` +
                        `📅 *Date:* ${billDate}\n` +
-                       `💰 *Total Amount:* ${totalAmount}\n\n` +
-                       `📎 *PDF Bill Attached*\n` +
-                       `📸 *Preview:* ${previewImageUrl}\n\n` +
+                       `💰 *Total Amount:* ₹${totalAmount}\n\n` +
+                       `PDF bill attached.\n\n` +
                        `Thank you,\nKR Enclave Management`;
         
-        const encodedMessage = encodeURIComponent(message);
+        // Share directly to WhatsApp
+        await navigator.share({
+            title: 'Rent Bill PDF',
+            text: message,
+            files: [file]
+        });
         
-        // Open WhatsApp with message and preview
-        window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
-        
-        setTimeout(() => {
-            alert("✅ PDF downloaded!\n\n📱 WhatsApp opened with bill preview.\n📎 Attach the downloaded PDF file to complete sharing.");
-        }, 1500);
+        alert("✅ PDF bill shared successfully on WhatsApp!");
         
     } catch (error) {
         console.error("PDF Share error:", error);
-        alert("❌ Error: " + error.message + "\n\nTry the Image share option instead.");
+        if (error.name !== 'AbortError') {
+            alert("❌ Error: " + error.message + "\n\nTry using Share as Image instead.");
+        }
         const controlsDiv = document.querySelector(".controls");
         const devSign = document.querySelector(".dev-sign");
         if(controlsDiv) controlsDiv.style.display = "block";
@@ -878,7 +893,7 @@ async function sharePDFOnWhatsApp() {
     }
 }
 
-// Function 3: Direct Share using Web Share API (Mobile only)
+// Direct Share (Already Working)
 async function directShareOnMobile() {
     const element = document.getElementById("bill");
     const billNo = document.getElementById("billNo").innerText;
@@ -886,9 +901,8 @@ async function directShareOnMobile() {
     const tenantName = document.getElementById("name").value || "Tenant";
     const flatNo = document.getElementById("house").value || "Flat";
     
-    // Check if Web Share API is available
     if (!navigator.share) {
-        alert("⚠️ Direct share not supported on this browser.\n\nPlease use Image or PDF share buttons.");
+        alert("⚠️ Direct share not supported. Use Download PDF button.");
         return;
     }
     
@@ -904,7 +918,7 @@ async function directShareOnMobile() {
         if(controlsDiv) controlsDiv.style.display = "none";
         if(devSign) devSign.style.display = "none";
         
-        // Capture as image for sharing
+        // Capture as image
         const canvas = await html2canvas(element, {
             scale: 2.5,
             backgroundColor: '#ffffff',
@@ -920,9 +934,9 @@ async function directShareOnMobile() {
         const file = new File([blob], `Rent_Bill_${billNo}.jpg`, { type: 'image/jpeg' });
         
         // Create message
-        const message = `🏠 KR ENCLAVE RENT BILL\nBill No: ${billNo}\nFlat: ${flatNo}\nTenant: ${tenantName}\nTotal: ${totalAmount}`;
+        const message = `KR ENCLAVE RENT BILL\nBill No: ${billNo}\nFlat: ${flatNo}\nTenant: ${tenantName}\nTotal: ₹${totalAmount}`;
         
-        // Direct share
+        // Share directly
         await navigator.share({
             title: 'Rent Bill',
             text: message,
@@ -933,7 +947,7 @@ async function directShareOnMobile() {
         
     } catch (error) {
         if (error.name !== 'AbortError') {
-            alert("❌ Share cancelled or failed: " + error.message);
+            alert("❌ Error: " + error.message);
         }
         const controlsDiv = document.querySelector(".controls");
         const devSign = document.querySelector(".dev-sign");
