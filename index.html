@@ -556,6 +556,7 @@ padding: 12px;
     <button onclick="downloadPDF()" style="margin-right: 12px;"><i class="fas fa-download"></i> Download PDF</button>
     <button onclick="shareOnWhatsApp()" style="background: #25D366; margin-right: 12px;"><i class="fab fa-whatsapp"></i> Share as Image</button>
     <button onclick="sharePDFOnWhatsApp()" style="background: #128C7E;"><i class="fas fa-file-pdf"></i> Share as PDF</button>
+	<button onclick="directShareOnMobile()" style="background: #1f4e8c;"><i class="fas fa-share-alt"></i> Direct Share</button>
 </div>
 </div>
 
@@ -875,6 +876,74 @@ async function sharePDFOnWhatsApp() {
         shareBtn.disabled = false;
     }
 }
+
+// Function 3: Direct Share using Web Share API (Mobile only)
+async function directShareOnMobile() {
+    const element = document.getElementById("bill");
+    const billNo = document.getElementById("billNo").innerText;
+    const totalAmount = document.getElementById("total").innerText;
+    const tenantName = document.getElementById("name").value || "Tenant";
+    const flatNo = document.getElementById("house").value || "Flat";
+    
+    // Check if Web Share API is available
+    if (!navigator.share) {
+        alert("⚠️ Direct share not supported on this browser.\n\nPlease use Image or PDF share buttons.");
+        return;
+    }
+    
+    const shareBtn = event.target.closest('button');
+    const originalText = shareBtn.innerHTML;
+    shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Preparing...';
+    shareBtn.disabled = true;
+    
+    try {
+        // Hide controls
+        const controlsDiv = document.querySelector(".controls");
+        const devSign = document.querySelector(".dev-sign");
+        if(controlsDiv) controlsDiv.style.display = "none";
+        if(devSign) devSign.style.display = "none";
+        
+        // Capture as image for sharing
+        const canvas = await html2canvas(element, {
+            scale: 2.5,
+            backgroundColor: '#ffffff',
+            logging: false
+        });
+        
+        // Restore controls
+        if(controlsDiv) controlsDiv.style.display = "block";
+        if(devSign) devSign.style.display = "flex";
+        
+        // Convert to blob
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+        const file = new File([blob], `Rent_Bill_${billNo}.jpg`, { type: 'image/jpeg' });
+        
+        // Create message
+        const message = `🏠 KR ENCLAVE RENT BILL\nBill No: ${billNo}\nFlat: ${flatNo}\nTenant: ${tenantName}\nTotal: ${totalAmount}`;
+        
+        // Direct share
+        await navigator.share({
+            title: 'Rent Bill',
+            text: message,
+            files: [file]
+        });
+        
+        alert("✅ Bill shared successfully!");
+        
+    } catch (error) {
+        if (error.name !== 'AbortError') {
+            alert("❌ Share cancelled or failed: " + error.message);
+        }
+        const controlsDiv = document.querySelector(".controls");
+        const devSign = document.querySelector(".dev-sign");
+        if(controlsDiv) controlsDiv.style.display = "block";
+        if(devSign) devSign.style.display = "flex";
+    } finally {
+        shareBtn.innerHTML = originalText;
+        shareBtn.disabled = false;
+    }
+}
+
 // Ensure all inputs trigger calculation
 document.querySelectorAll('input, select').forEach(el => {
     el.addEventListener('input', calculate);
