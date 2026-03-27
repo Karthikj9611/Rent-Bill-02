@@ -809,8 +809,7 @@ const file = new File([blob], `Rent_Bill_${billNo}.jpg`, { type: 'image/jpeg' })
 const message = `🏢 *Flat :* ${flatNo}\n` +
 `👤 *Tenant :* ${tenantName}\n` +
 `📅 *Date :* ${billDate}\n` +
-`💰 *Total Amount :* ₹${totalAmount}\n\n` +
-`Thank you,\n KR`;
+`💰 *Total Amount :* ₹${totalAmount};
 
 // Share directly to WhatsApp
 await navigator.share({
@@ -897,8 +896,7 @@ const message = `🏠 *KR ENCLAVE RENT BILL* 🏠\n\n` +
 `👤 *Tenant:* ${tenantName}\n` +
 `📅 *Date:* ${billDate}\n` +
 `💰 *Total Amount:* ${totalAmount}\n\n` +
-`PDF bill attached.\n\n` +
-`Thank you,\nKR Enclave Management`;
+`PDF bill attached.;
 
 // Share directly to WhatsApp
 await navigator.share({
