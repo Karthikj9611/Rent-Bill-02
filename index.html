@@ -537,45 +537,6 @@ padding: 6px;
 }
 }
 
-#bill {
-width: 100%;
-max-width: 210mm;     /* keeps A4 for PDF */
-min-height: 280mm;
-margin: 0 auto;
-padding: 18px 22px;
-background: #ffffff;
-border-radius: 12px;
-box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-position: relative;
-border: 1px solid var(--border);
-}
-
-/* Force full-width display on mobile even in desktop mode */
-@media (max-width: 900px) {
-#bill {
-max-width: 100%;
-border-radius: 0;
-box-shadow: none;
-}
-
-body {
-padding: 0;
-background: #ffffff;
-}
-}
-
-@media (max-width: 900px) {
-.header {
-flex-direction: column;
-align-items: flex-start;
-gap: 8px;
-}
-
-.bill-two-columns {
-flex-direction: column;
-gap: 10px;
-}
-}
 </style>
 </head>
 <body>
