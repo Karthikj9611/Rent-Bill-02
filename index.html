@@ -2,12 +2,71 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
 <title>KR Rent Bill</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
+
+/* Mobile zoom fix - prevent forced zoom out */
+html {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
+
+#bill {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+/* Ensure all content scales properly on mobile */
+@media (max-width: 768px) {
+  #bill {
+    padding: 12px 15px;
+    width: 100%;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .bill-two-columns {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  #billNoDiv {
+    text-align: left;
+    margin-top: 5px;
+  }
+  
+  table {
+    font-size: 11px;
+  }
+  
+  th, td {
+    padding: 8px 5px;
+  }
+  
+  .total-highlight {
+    font-size: 18px !important;
+  }
+}
 
 /* Center all input values */
 input, input[type="text"], input[type="number"] {
@@ -1159,4 +1218,33 @@ function validateBillFields() {
     
     return true;
 }
+
+// Mobile zoom fix - ensure proper scaling on load and orientation change
+function fixMobileZoom() {
+  if (window.innerWidth <= 768) {
+    const bill = document.getElementById('bill');
+    if (bill) {
+      // Reset any forced scaling
+      bill.style.transform = '';
+      bill.style.zoom = '';
+    }
+    document.body.style.zoom = '';
+    document.body.style.transform = '';
+  }
+}
+
+// Run on load
+window.addEventListener('load', fixMobileZoom);
+
+// Run on orientation change (when user rotates phone)
+window.addEventListener('orientationchange', function() {
+  setTimeout(fixMobileZoom, 100);
+});
+
+// Run on resize (for any viewport changes)
+let resizeTimer;
+window.addEventListener('resize', function() {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(fixMobileZoom, 100);
+});
 </script>
