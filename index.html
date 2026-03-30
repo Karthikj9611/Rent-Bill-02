@@ -537,6 +537,30 @@ padding: 6px;
 }
 }
 
+
+/* Mobile: compact buttons in one line */
+@media (max-width: 600px) {
+
+.controls {
+display: flex;
+justify-content: space-between;
+gap: 6px;
+padding: 8px;
+}
+
+.controls button {
+flex: 1;                 /* equal width */
+padding: 8px 6px;
+font-size: 11px;
+border-radius: 20px;
+white-space: nowrap;     /* prevent text wrapping */
+}
+
+.controls button i {
+font-size: 12px;
+margin-right: 4px;
+}
+}
 </style>
 </head>
 <body>
