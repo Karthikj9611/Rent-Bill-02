@@ -32,7 +32,7 @@ body {
 #bill {
   width: 100%;
   max-width: 210mm;
-  min-height: 280mm;
+  min-height: auto;
   margin: 0 auto;
   padding: 18px 22px;
   background: #ffffff;
@@ -318,35 +318,30 @@ button:hover { background: #0e3a6b; transform: translateY(-1px); }
   .modal-content button { padding: 10px 24px; font-size: 14px; }
 }
 
-/* Mobile Desktop View - Fit Height to Display */
+/* Mobile Desktop View - Height Fit to Display */
 @media (max-width: 768px) {
-  body {
+  html, body {
+    height: auto;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+  }
+  
+  body {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block;
   }
   
   #bill {
-    min-height: auto;
-    height: auto;
-    margin: 0;
-    padding: 12px;
+    min-height: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: visible;
   }
 }
 
-/* For devices in landscape orientation */
-@media (max-width: 896px) and (orientation: landscape) {
-  body {
-    padding: 5px;
-  }
-  
+@media (max-width: 768px) and (orientation: portrait) {
   #bill {
-    padding: 8px;
-  }
-  
-  .header, .info-grid, .water-section, .notes, .footer {
-    margin-bottom: 8px;
+    padding-bottom: 20px;
   }
 }
 
