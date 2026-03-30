@@ -561,6 +561,31 @@ font-size: 12px;
 margin-right: 4px;
 }
 }
+
+/* ===== FULL WIDTH ONLY FOR DESKTOP & MOBILE DESKTOP MODE ===== */
+@media (min-width: 900px) {
+
+#bill {
+width: 100%;
+max-width: 100%;
+margin: 0;
+padding: 24px;
+}
+
+body {
+background: #f4f6f8;
+padding: 0;
+}
+
+}
+
+@media print {
+#bill {
+width: 210mm;
+min-height: 297mm;
+margin: auto;
+}
+}
 </style>
 </head>
 <body>
