@@ -317,6 +317,39 @@ button:hover { background: #0e3a6b; transform: translateY(-1px); }
   .modal-content p { font-size: 13px; }
   .modal-content button { padding: 10px 24px; font-size: 14px; }
 }
+
+/* Mobile Desktop View - Fit Height to Display */
+@media (max-width: 768px) {
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  #bill {
+    min-height: auto;
+    height: auto;
+    margin: 0;
+    padding: 12px;
+  }
+}
+
+/* For devices in landscape orientation */
+@media (max-width: 896px) and (orientation: landscape) {
+  body {
+    padding: 5px;
+  }
+  
+  #bill {
+    padding: 8px;
+  }
+  
+  .header, .info-grid, .water-section, .notes, .footer {
+    margin-bottom: 8px;
+  }
+}
+
 </style>
 </head>
 <body>
