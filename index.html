@@ -73,7 +73,8 @@ padding: 20px 10px;
 }
 
 #bill {
-width: 190mm;
+width: 100%;
+max-width: 210mm;      /* keeps A4 width for PDF */
 min-height: 280mm;
 margin: 0 auto;
 padding: 18px 22px;
@@ -84,6 +85,18 @@ position: relative;
 border: 1px solid #e0e7f0;
 }
 
+/* Mobile scaling */
+@media (max-width: 768px) {
+#bill {
+padding: 12px;
+border-radius: 0;
+box-shadow: none;
+}
+body {
+padding: 0;
+background: #fff;
+}
+}
 .watermark {
 position: absolute;
 top: 42%;
