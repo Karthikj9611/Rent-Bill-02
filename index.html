@@ -56,10 +56,14 @@ padding: 0;
 box-sizing: border-box;
 }
 :root {
---main: #1f4e8c;
---light: #eef3ff;
---border: #cfd6e4;
---text: #1e2a3e;
+--main: #0f766e;      /* dark teal */
+--light: #e6fffa;     /* soft background */
+--border: #99f6e4;
+--text: #083344;
+}
+
+.header {
+background: linear-gradient(135deg, #0f766e, #134e4a);
 }
 
 body {
@@ -183,6 +187,7 @@ border-radius: 18px;
 padding: 14px 18px;
 margin-bottom: 18px;
 }
+
 .info-item {
 display: flex;
 align-items: center;
@@ -496,6 +501,31 @@ font-size: 13px;
 .modal-content button {
 padding: 10px 24px;
 font-size: 14px;
+}
+}
+
+/* Mobile layout fix for Flat No & Tenant Name */
+@media (max-width: 600px) {
+.info-grid {
+grid-template-columns: 1fr 1fr;   /* always two equal columns */
+gap: 8px;
+padding: 10px;
+}
+
+.info-item {
+flex-direction: column;
+align-items: stretch;
+}
+
+.info-item .label {
+min-width: unset;
+text-align: center;
+}
+
+.info-item input,
+.info-item select {
+width: 100%;
+text-align: center;
 }
 }
 </style>
