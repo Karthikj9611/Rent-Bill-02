@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>KR Rent Bill</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -73,10 +73,8 @@ padding: 20px 10px;
 }
 
 #bill {
-width: 100%;
-max-width: 900px;
-margin: 0 auto;
-min-height: auto;
+width: 190mm;
+min-height: 280mm;
 margin: 0 auto;
 padding: 18px 22px;
 background: #ffffff;
@@ -487,46 +485,6 @@ padding: 12px;
         font-size: 14px;
     }
 }
-
-@media print {
-  #bill {
-    width: 190mm;
-    min-height: 280mm;
-    margin: 0;
-    box-shadow: none;
-  }
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.info-item {
-  display: flex;
-  flex-direction: column;   /* makes label and field stack neatly */
-  gap: 4px;
-}
-
-.info-item .label {
-  min-width: 0;
-}
-
-.controls {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: nowrap;   /* prevents wrapping */
-}
-
-.controls button {
-  flex: 1;
-  padding: 8px 10px;
-  font-size: 12px;
-  white-space: nowrap;
-}
-
 </style>
 </head>
 <body>
@@ -547,7 +505,7 @@ padding: 12px;
 </div>
 <div style="font-size:11px; font-weight:500;">AECS Layout</div>
 <div class="phone-buttons">
-<a href="tel:9611459960" class="call-link" style="text-decoration:none;"><i class="fas fa-phone-alt"></i></a>
+<a href="tel:9611459960" class="call-link" style="text-decoration:none;"><i class="fas fa-phone-alt"></i> 9611459960</a>
 <a href="https://wa.me/919611459960" target="_blank" class="whatsapp-link"><i class="fab fa-whatsapp"></i></a>
 </div>
 </div>
@@ -707,7 +665,7 @@ padding: 12px;
 
 <div class="dev-sign">
 <a href="https://kr-webcrafts.onrender.com" target="_blank"><i class="fas fa-code"></i> KR Webcrafts</a>
-<a href="tel:9611459960" style="text-decoration:none; background:#0a58ca; color:white; padding:5px 12px; border-radius:30px; font-size:9px; display:inline-flex; align-items:center; gap:6px;">
+<a href="tel:+919611459960" style="text-decoration:none; background:#0a58ca; color:white; padding:5px 12px; border-radius:30px; font-size:9px; display:inline-flex; align-items:center; gap:6px;">
 <i class="fas fa-phone-alt"></i>
 </a>
 <a href="https://wa.me/919611459960" target="_blank"><i class="fab fa-whatsapp"></i> </a>
@@ -863,7 +821,7 @@ document.body.style.overflow = "hidden";
 
 const opt = {
 margin: [0.2, 0.2, 0.2, 0.2],
-filename: `SSR_Rent_Bill_${document.getElementById("billNo").innerText}.pdf`,
+filename: `Rent_Bill_Of_${document.getElementById("name").value}.pdf`,
 image: { type: 'jpeg', quality: 0.98 },
 enableLinks: true,
 html2canvas: { 
