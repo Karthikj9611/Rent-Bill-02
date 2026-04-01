@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KR Rent Bill</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -73,8 +73,10 @@ padding: 20px 10px;
 }
 
 #bill {
-width: 190mm;
-min-height: 280mm;
+width: 100%;
+max-width: 900px;
+margin: 0 auto;
+min-height: auto;
 margin: 0 auto;
 padding: 18px 22px;
 background: #ffffff;
@@ -485,6 +487,16 @@ padding: 12px;
         font-size: 14px;
     }
 }
+
+@media print {
+  #bill {
+    width: 190mm;
+    min-height: 280mm;
+    margin: 0;
+    box-shadow: none;
+  }
+}
+
 </style>
 </head>
 <body>
