@@ -485,6 +485,122 @@ padding: 12px;
         font-size: 14px;
     }
 }
+
+/* Mobile Responsive Fixes */
+@media (max-width: 768px) {
+    #bill {
+        width: 100%;
+        padding: 12px;
+        box-sizing: border-box;
+        overflow-x: auto;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    #billNoDiv {
+        text-align: left;
+        margin-top: 5px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 12px;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .info-item .label {
+        width: auto;
+        text-align: center;
+    }
+    
+    .bill-two-columns {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .water-table th,
+    .water-table td {
+        padding: 6px 4px;
+        font-size: 9px;
+    }
+    
+    .water-table input {
+        font-size: 9px;
+        width: 100%;
+        min-width: 60px;
+    }
+    
+    table th,
+    table td {
+        padding: 6px 4px;
+        font-size: 9px;
+    }
+    
+    .total-highlight {
+        font-size: 16px !important;
+    }
+    
+    .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .controls button {
+        width: 90%;
+        margin: 0;
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    .footer {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .signature, .signature2 {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .dev-sign {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .dev-sign a {
+        width: 90%;
+        justify-content: center;
+    }
+    
+    .notes ul {
+        padding-left: 15px;
+    }
+    
+    .notes li {
+        font-size: 9px;
+    }
+    
+    .words-section {
+        font-size: 9px;
+    }
+    
+    input, select {
+        font-size: 11px !important;
+    }
+}
 </style>
 </head>
 <body>
