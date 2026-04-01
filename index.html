@@ -497,6 +497,36 @@ padding: 12px;
   }
 }
 
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;   /* makes label and field stack neatly */
+  gap: 4px;
+}
+
+.info-item .label {
+  min-width: 0;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;   /* prevents wrapping */
+}
+
+.controls button {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
 </style>
 </head>
 <body>
