@@ -2,12 +2,37 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=717, initial-scale=1.0, user-scalable=yes">
 <title>KR Rent Bill</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
+/* Add at the very beginning of your style tag */
+html {
+  width: 100%;
+  overflow-x: auto;
+}
+
+body {
+  overflow-x: auto;
+  min-width: 320px;
+}
+
+#bill {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 0 auto;
+}
+
+/* Keep original width for PDF - no change to download */
+@media (max-width: 768px) {
+  #bill {
+    width: auto;
+    min-width: 320px;
+  }
+}
+
 
 /* Center all input values */
 input, input[type="text"], input[type="number"] {
@@ -73,17 +98,46 @@ padding: 20px 10px;
 }
 
 #bill {
-width: 190mm;
-min-height: 280mm;
-margin: 0 auto;
-padding: 18px 22px;
-background: #ffffff;
-border-radius: 12px;
-box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-position: relative;
-border: 1px solid #e0e7f0;
+  width: 190mm;
+  min-height: 280mm;
+  margin: 0 auto;
+  padding: 18px 22px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+  position: relative;
+  border: 1px solid #e0e7f0;
 }
 
+/* Add this media query at the end of your style section */
+@media (max-width: 700px) {
+  #bill {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+  body {
+    padding: 10px 5px;
+  }
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  .bill-two-columns {
+    flex-direction: column;
+  }
+  .footer {
+    flex-direction: column;
+    text-align: center;
+  }
+  .signature, .signature2 {
+    width: 100%;
+    text-align: center;
+  }
+}
 .watermark {
 position: absolute;
 top: 42%;
@@ -485,6 +539,8 @@ padding: 12px;
         font-size: 14px;
     }
 }
+
+
 </style>
 </head>
 <body>
