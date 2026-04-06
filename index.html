@@ -950,6 +950,7 @@ async function shareOnWhatsApp() {
 if (!validateBillFields()) return;
 const element = document.getElementById("bill");
 const billNo = document.getElementById("billNo").innerText;
+calculate();
 const totalAmount = document.getElementById("total").innerText;
 const tenantName = document.getElementById("name").value || "Tenant";
 const flatNo = document.getElementById("house").value || "Flat";
@@ -1024,6 +1025,7 @@ async function sharePDFOnWhatsApp() {
 if (!validateBillFields()) return;
 const element = document.getElementById("bill");
 const billNo = document.getElementById("billNo").innerText;
+calculate();
 const totalAmount = document.getElementById("total").innerText;
 const tenantName = document.getElementById("name").value || "Tenant";
 const flatNo = document.getElementById("house").value || "Flat";
